@@ -149,7 +149,7 @@ int main(int argc, char** argv)
                 // Generate the AABB.
                 aabb::AABB aabb(lowerBound, upperBound);
 
-                // Query candidate AABB overlaps.
+                // Query AABB overlaps.
                 std::vector<unsigned int> particles = treeLarge.query(aabb);
 
                 // Flag as no overlap (yet).
@@ -207,7 +207,7 @@ int main(int argc, char** argv)
             // Generate the AABB.
             aabb::AABB aabb(lowerBound, upperBound);
 
-            // Query candidate AABB overlaps with small particle tree.
+            // Query AABB overlaps with small particle tree.
             std::vector<unsigned int> particles = treeLarge.query(aabb);
 
             // Flag as no overlap (yet).
@@ -234,7 +234,7 @@ int main(int argc, char** argv)
                 // No need to test the first particle.
                 if (i > 0)
                 {
-                    // Now query candidate AABB overlaps with small particle tree.
+                    // Now query AABB overlaps with small particle tree.
                     particles = treeSmall.query(aabb);
 
                     // Test overlap.
@@ -337,7 +337,7 @@ int main(int argc, char** argv)
             // Generate the AABB.
             aabb::AABB aabb(lowerBound, upperBound);
 
-            // Query candidate AABB overlaps with small particles.
+            // Query AABB overlaps with small particles.
             std::vector<unsigned int> particles = treeSmall.query(aabb);
 
             // Flag as not overlapping (yet).
@@ -365,7 +365,7 @@ int main(int argc, char** argv)
             // Advance to next overlap test.
             if (!isOverlap)
             {
-                // Now query candidate AABB overlaps with large particles.
+                // Now query AABB overlaps with large particles.
                 particles = treeLarge.query(aabb);
 
                 // Test overlap.
