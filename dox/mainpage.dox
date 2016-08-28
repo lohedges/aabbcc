@@ -1,0 +1,14 @@
+/** \mainpage AABBCC Documentation
+
+\section intro_sec Introduction
+AABBCC is a C++ implementation of dynamic axis-aligned bounding box (AABB)
+trees, based on code from the Box2D physics engine (http://www.box2d.org).
+
+AABB trees enable fast and efficient neighbour searches for objects of
+arbitrary size and geometry. In comparison to cell lists, AABB trees are
+particularly efficient when the system is comprised of particle species with
+markedly different sizes, or when the density is highly inhomegeneous.
+
+This implementation can handle both periodic and non-periodic simulation boxes.
+The simulation box can also be partially periodic along specific axes.
+*/
