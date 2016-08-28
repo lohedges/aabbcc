@@ -49,7 +49,7 @@ the install location:
 $ make PREFIX=MY_INSTALL_DIR install
 ```
 If you would rather use a header-only version of the library in your application,
-simply run
+simply run:
 
 ```bash
 $ make header-only
@@ -66,11 +66,10 @@ $ make
 ```
 
 ## Compiling and linking
-To use the library with a C/C++ code first include the library header file somewhere
+To use the library with a C/C++ code first include the library header file
 in the code.
 
 ```cpp
-//example.cpp
 #include <aabb/AABB.h>
 ```
 
@@ -91,7 +90,7 @@ $ g++ example.cc -I/my/path/include -L/my/path/lib -laabb
 Let's consider a two-component system of hard discs in two dimensions, where
 one species is much larger than the other. Making use of AABB trees, we can
 efficiently search for potential overlaps between discs by decomposing the
-system into its two constituents and constructing a tree for each species.
+system into its two constituent species constructing a tree for each one.
 To test overlaps for any given disc, we simply query the two trees
 independently in order to find candidates. This decomposition ensures that
 each AABB tree has a well defined length scale, making it simple to construct
@@ -101,7 +100,8 @@ The image below shows the example hard disc system (left) and the AABB tree
 structures for each species (middle and right). Each leaf node in a tree is
 the AABB of an individual disc. Moving up the tree, AABBs are grouped together
 into larger bounding volumes in a recursive fashion, leading to a single AABB
-enclosing all of the discs at the root.
+enclosing all of the discs at the root. The box in the left-hand image shows
+the periodic boundary of the system.
 
 ![AABBs for a binary hard disc system.](https://raw.githubusercontent.com/lohedges/assets/master/aabbcc/images/aabb.png)
 
@@ -126,15 +126,15 @@ You may be wondering why the AABBs shown in the previous animation are not
 the minimum enclosing bounding box for each disc. This is a trick that is
 used to avoid frequent updates of the AABB tree during dynamics (movement
 of the discs). Whenever an AABB moves we need to delete it from the tree then
-reinsert it. This can be a costly operation. By "fattening" the AABBs a
-small amount it is possible to make many displacements of the objects before
-and update is triggered, i.e. when a disc moves outside its fattened AABB.
-During dynamics it is also possible for the tree to become unbalanced,
-leading to increasingly inefficient queries. Here trees are balanced using
-a surface area heuristic and active balancing is handled via tree rotations.
-The animation below shows an example of a hard disc simulation. Dynamic AABB
-trees were used to maintain a configuration of non-overlapping discs
-throughout the trajectory.
+reinsert the new one. This can be a costly operation. By "fattening" the AABBs
+a small amount it is possible to make many displacements of the objects before
+and update is triggered, i.e. when one of the discs moves outside of its
+fattened AABB. During dynamics it is also possible for the tree to become
+unbalanced, leading to increasingly inefficient queries. Here trees are balanced
+using a surface area heuristic and active balancing is handled via tree
+rotations. The animation below shows an example of a hard disc simulation.
+Dynamic AABB trees were used to maintain a configuration of non-overlapping
+discs throughout the trajectory.
 
 <section>
 	<img width="880" src="https://raw.githubusercontent.com/lohedges/assets/master/aabbcc/animations/dynamics.gif" alt="Dynamics using AABB trees for overlap tests.">
@@ -177,7 +177,7 @@ aabb::AABB aabb(lowerBound, upperBound);
 
 ### Tree
 #### Initialising a tree
-To instantiate the dynamic AABB trees for a periodic two-component system in
+To instantiate dynamic AABB trees for a periodic two-component system in
 two dimensions.
 
 ```cpp
@@ -248,7 +248,7 @@ keep track of these).
 You can query the tree for overlaps with a specific particle, or for overlaps
 with an arbitrary AABB object. The `query` method returns a vector containing
 the indices of the AABBs that overlap. You'll then need to test the objects
-to which these AABBs belong for actual overlap with the particle of interest.
+enclosed by these AABBs for actual overlap with the particle of interest.
 
 For a particle already in the tree:
 
