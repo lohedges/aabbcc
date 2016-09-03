@@ -18,7 +18,9 @@ They are particularly helpful for systems where there is a large size disparity
 between particle species, or whenever the particle density is extremely
 inhomogeneous. In such situations, traditional neighbour finding tools, such
 as [cell lists](https://en.wikipedia.org/wiki/Cell_lists), can become extremely
-inefficient (both in terms of memory footprint, and search speed).
+inefficient (both in terms of memory footprint, and search speed). A good
+overview of the pros and cons of various neighbour finding algorithms
+can be found [here](http://hoomd-blue.readthedocs.io/en/stable/nlist.html).
 
 In statistical physics, a common means of approximating a bulk (infinite)
 system is through the use of [periodic boundary conditions](https://en.wikipedia.org/wiki/Periodic_boundary_conditions).
