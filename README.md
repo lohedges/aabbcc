@@ -21,6 +21,9 @@ as [cell lists](https://en.wikipedia.org/wiki/Cell_lists), can become extremely
 inefficient (both in terms of memory footprint, and search speed). A good
 overview of the pros and cons of various neighbour finding algorithms
 can be found [here](http://hoomd-blue.readthedocs.io/en/stable/nlist.html).
+(Note that this only discusses the cost of _querying_ different data
+structures, not the additional overhead of building them, or maintaining
+them as objects move around.)
 
 In statistical physics, a common means of approximating a bulk (infinite)
 system is through the use of [periodic boundary conditions](https://en.wikipedia.org/wiki/Periodic_boundary_conditions).
