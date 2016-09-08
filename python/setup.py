@@ -6,7 +6,6 @@ setup.py file for the AABB.cc python interface.
 
 from distutils.core import setup, Extension
 
-
 aabb_module = Extension('_aabb',
                          sources=['aabb_wrap.cxx', '../src/AABB.cc'],
                         )
