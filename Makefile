@@ -216,7 +216,7 @@ $(obj_dir)/%.o: $(src_dir)/%.cc .compiler_flags
 
 # Build the library and demos.
 .PHONY: build
-build: $(obj_dir) $(library) $(demos) $(python)
+build: $(obj_dir) $(library) $(demos) python
 
 # Create output directory for object and dependency files.
 $(obj_dir):
@@ -237,6 +237,7 @@ $(demos): %: %.cc $(library)
 # Build the python wrapper.
 .PHONY: python
 python: .check_python $(python_dir)/aabb.i $(python_dir)/setup.py
+	$(call colorecho, 1, "--> Building Python wrapper")
 	cd $(python_dir)									;\
 	$(swig_binary) -c++ -python aabb.i					;\
 	$(python_binary) setup.py -q build_ext --inplace
