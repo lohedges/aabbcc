@@ -157,7 +157,7 @@ namespace aabb
     Tree::Tree(unsigned int dimension_,
                double skinThickness_,
                unsigned int nParticles) :
-        dimension(dimension_), isPeriodic(false), skinThickness(skinThickness_), periodicity({false, false, false})
+        dimension(dimension_), isPeriodic(false), skinThickness(skinThickness_)
     {
         // Validate the dimensionality.
         if ((dimension != 2) && (dimension != 3))
@@ -166,12 +166,10 @@ namespace aabb
             exit(EXIT_FAILURE);
         }
 
-        // Validate the dimensionality of the vectors.
-        if (periodicity.size() != dimension)
-        {
-            std::cerr << "[ERROR]: Dimensionality mismatch!" << '\n';
-            exit(EXIT_FAILURE);
-        }
+        // Initialise the periodicity vector.
+        periodicity.resize(dimension);
+        if (dimension == 2) periodicity = {false, false};
+        else                periodicity = {false, false, false};
 
         // Initialise the tree.
         root = NULL_NODE;
