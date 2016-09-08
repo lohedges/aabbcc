@@ -94,6 +94,9 @@ obj_dir := obj
 # Path for the library.
 lib_dir := lib
 
+# Path for the python wrapper.
+python_dir := python
+
 # Path for the header-only library.
 header_only_dir := header-only
 
@@ -117,6 +120,12 @@ commit := $(shell git describe --abbrev=4 --dirty --always --tags 2> /dev/null)
 
 # Git branch information.
 branch := $(shell git rev-parse --abbrev-ref HEAD 2> /dev/null)
+
+# Python 2.7 binary.
+python_binary := $(shell which python2.7)
+
+# SWIG binary.
+swig_binary := $(shell which swig)
 
 # C++ compiler flags for development build.
 cxxflags_devel := -O0 -std=c++11 -g -Wall -Isrc -DCOMMIT=\"$(commit)\" -DBRANCH=\"$(branch)\" $(OPTFLAGS)
@@ -155,6 +164,7 @@ help:
 	@echo " build       -->  build library and demos (default=release)"
 	@echo " devel       -->  build using development compiler flags (debug)"
 	@echo " release     -->  build using release compiler flags (optmized)"
+	@echo " python      -->  build the python wrapper"
 	@echo " header-only -->  create a header-only version of the library"
 	@echo " doc         -->  generate source code documentation with doxygen"
 	@echo " clean       -->  remove object and dependency files"
@@ -180,6 +190,17 @@ devel release:
 .compiler_flags: force
 	@echo '$(CXXFLAGS)' | cmp -s - $@ || echo '$(CXXFLAGS)' > $@
 
+# Check that python2.7 and swig binaries are present.
+# This target ensures that all Python demos are recompiled if the .check_python file changes.
+.PHONY: force
+.check_python: force
+	@echo "Python found." | cmp -s - $@ || \
+	if [ "$(python_binary)" = "" ] || [ "$(swig_binary)" = "" ] ; then \
+        echo "Python not found."; \
+        exit 1; \
+	else echo "Python found."; \
+	fi > $@
+
 # Compile object files.
 # Autodepenencies are handled using a recipe taken from
 # http://scottmcpeak.com/autodepend/autodepend.html
@@ -195,7 +216,7 @@ $(obj_dir)/%.o: $(src_dir)/%.cc .compiler_flags
 
 # Build the library and demos.
 .PHONY: build
-build: $(obj_dir) $(library) $(demos)
+build: $(obj_dir) $(library) $(demos) $(python)
 
 # Create output directory for object and dependency files.
 $(obj_dir):
@@ -212,6 +233,13 @@ $(library): $(objects)
 $(demos): %: %.cc $(library)
 	$(call colorecho, 1, "--> Linking CXX executable $@")
 	$(CXX) $(CXXFLAGS) $@.cc $(library) $(LIBS) $(LDFLAGS) -o $@
+
+# Build the python wrapper.
+.PHONY: python
+python: .check_python $(python_dir)/aabb.i $(python_dir)/setup.py
+	cd $(python_dir)									;\
+	$(swig_binary) -c++ -python aabb.i					;\
+	$(python_binary) setup.py -q build_ext --inplace
 
 # Create the header only library.
 .PHONY: header-only
@@ -232,13 +260,17 @@ doc: $(headers) $(sources) $(dox_files)
 .PHONY: install
 install: build doc
 	$(call colorecho, 3, "--> Installing CXX static library $(library) to $(PREFIX)/lib")
+	$(call colorecho, 3, "--> Installing Python wrapper to $(PREFIX)/lib/python2.7")
 	$(call colorecho, 3, "--> Installing CXX demos $(demos) to $(PREFIX)/share/$(project)-demos")
 	$(call colorecho, 3, "--> Installing CXX Doxygen documentation to $(PREFIX)/share/doc/$(project)")
 	$(install_cmd) -d $(iflags_exec) $(PREFIX)/lib
+	$(install_cmd) -d $(iflags_exec) $(PREFIX)/lib/python2.7
 	$(install_cmd) -d $(iflags_exec) $(PREFIX)/include/$(project)
 	$(install_cmd) -d $(iflags_exec) $(PREFIX)/share/$(project)-demos
 	$(install_cmd) -d $(iflags_exec) $(PREFIX)/share/doc/$(project)
 	$(install_cmd) $(iflags) $(library) $(PREFIX)/lib
+	$(install_cmd) $(iflags) $(python_dir)/aabb.py $(PREFIX)/lib
+	$(install_cmd) $(iflags_exec) $(python_dir)/_aabb.so $(PREFIX)/lib/python2.7
 	$(install_cmd) $(iflags) $(headers) $(PREFIX)/include/$(project)
 	$(install_cmd) $(iflags) $(demo_sources) $(PREFIX)/share/$(project)-demos
 	$(install_cmd) $(iflags_exec) $(demos) $(PREFIX)/share/$(project)-demos
@@ -248,9 +280,11 @@ install: build doc
 .PHONY: uninstall
 uninstall:
 	$(call colorecho, 3, "--> Uninstalling CXX static library $(library) from $(PREFIX)/lib")
+	$(call colorecho, 3, "--> Uninstalling Python wrapper from $(PREFIX)/lib/python2.7")
 	$(call colorecho, 3, "--> Uninstalling CXX demos $(demos) from $(PREFIX)/share/$(project)-demos")
 	$(call colorecho, 3, "--> Uninstalling CXX Doxygen documentation from $(PREFIX)/share/doc/$(project)")
 	rm -f $(PREFIX)/$(library)
+	rm -f $(PREFIX)/lib/python2.7/_aabb.so
 	rm -rf $(PREFIX)/include/$(project)
 	rm -rf $(PREFIX)/share/$(project)-demos
 	rm -rf $(PREFIX)/share/doc/$(project)
@@ -267,11 +301,16 @@ clobber:
 	$(call colorecho, 6, "--> Cleaning all output files")
 	rm -rf $(obj_dir)
 	rm -rf $(lib_dir)
+	rm -rf $(python_dir)/build
+	rm -rf $(python_dir)/_aabb.so
+	rm -rf $(python_dir)/aabb_wrap.cxx
+	rm -rf $(python_dir)/aabb.py*
 	rm -rf $(header_only_dir)
 	rm -rf doc
 	rm -f $(demos)
 	rm -rf $(demo_dir)/*dSYM
 	rm -f .compiler_flags
+	rm -f .check_python
 
 .PHONY: sandwich
 sandwich:
