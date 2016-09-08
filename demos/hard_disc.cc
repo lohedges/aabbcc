@@ -110,7 +110,7 @@ int main(int argc, char** argv)
     std::vector<std::vector<double> > positionsLarge(nLarge, std::vector<double>(boxSize.size()));
 
     /*****************************************************************/
-    /*             Generate the initial AABB tree.                   */
+    /*             Generate the initial AABB trees.                  */
     /*****************************************************************/
 
     // First the large particles.
@@ -185,8 +185,6 @@ int main(int argc, char** argv)
     std::cout << "\nInserting small particles into AABB tree ...\n";
     for (unsigned int i=0;i<nSmall;i++)
     {
-        // First test overlaps with existing large particles.
-
         // Initialise the particle position vector.
         std::vector<double> position(2);
 
@@ -207,7 +205,7 @@ int main(int argc, char** argv)
             // Generate the AABB.
             aabb::AABB aabb(lowerBound, upperBound);
 
-            // Query AABB overlaps with small particle tree.
+            // First query AABB overlaps with the large particles.
             std::vector<unsigned int> particles = treeLarge.query(aabb);
 
             // Flag as no overlap (yet).
@@ -234,7 +232,7 @@ int main(int argc, char** argv)
                 // No need to test the first particle.
                 if (i > 0)
                 {
-                    // Now query AABB overlaps with small particle tree.
+                    // Now query AABB overlaps with other small particles.
                     particles = treeSmall.query(aabb);
 
                     // Test overlap.
@@ -318,21 +316,10 @@ int main(int argc, char** argv)
             periodicBoundaries(position, periodicity, boxSize);
 
             // Compute lower and upper AABB bounds.
-
-            if (particleType == 0)
-            {
-                lowerBound[0] = position[0] - radiusSmall;
-                lowerBound[1] = position[1] - radiusSmall;
-                upperBound[0] = position[0] + radiusSmall;
-                upperBound[1] = position[1] + radiusSmall;
-            }
-            else
-            {
-                lowerBound[0] = position[0] - radiusLarge;
-                lowerBound[1] = position[1] - radiusLarge;
-                upperBound[0] = position[0] + radiusLarge;
-                upperBound[1] = position[1] + radiusLarge;
-            }
+            lowerBound[0] = position[0] - radius;
+            lowerBound[1] = position[1] - radius;
+            upperBound[0] = position[0] + radius;
+            upperBound[1] = position[1] + radius;
 
             // Generate the AABB.
             aabb::AABB aabb(lowerBound, upperBound);
