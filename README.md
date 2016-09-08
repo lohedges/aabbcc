@@ -39,7 +39,7 @@ physics engine.
 ## Installation
 A `Makefile` is included for building and installing the AABB library.
 
-To compile and install the library, documentation, and demos:
+To compile and install the library, documentation, python wrapper, and demos:
 
 ```bash
 $ make build
@@ -90,6 +90,19 @@ we specify an install location, we would use a command more like the following:
 ```bash
 $ g++ example.cc -I/my/path/include -L/my/path/lib -laabb
 ```
+
+## Python wrapper
+A python wrapper can be built using:
+
+```bash
+$ make python
+```
+
+You will require [python2.7](https://www.python.org/download/releases/2.7)
+and [SWIG](http://www.swig.org). To use the module you will need the python
+file `aabb.py` and the shared object `_aabb.so` from the `python` directory.
+(The wrapper should also work with `python3`, but you'll need to manually
+modify the Makefile and setup file.)
 
 ## Example
 Let's consider a two-component system of hard discs in two dimensions, where
@@ -154,6 +167,9 @@ as follows:
 $ ./demos/hard_disc
 $ vmd trajectory.xyz -e demos/vmd.tcl
 ```
+
+A python version of the demo can be found at `python/hard_disc.py`. This
+provides an example of how to use the python wrapper module.
 
 ## Usage
 There area several steps that go into building and using an AABB tree. Below
