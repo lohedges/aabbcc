@@ -1,4 +1,4 @@
-# AABBCC Makefile
+# AABB.cc Makefile
 
 # Copyright (c) 2016 Lester Hedges <lester.hedges+aabbcc@gmail.com>
 
@@ -238,8 +238,8 @@ $(demos): %: %.cc $(library)
 .PHONY: python
 python: .check_python $(python_dir)/aabb.i $(python_dir)/setup.py
 	$(call colorecho, 1, "--> Building Python wrapper")
-	cd $(python_dir)									;\
-	$(swig_binary) -c++ -python aabb.i					;\
+	cd $(python_dir)                                    ;\
+	$(swig_binary) -builtin -c++ -python aabb.i         ;\
 	$(python_binary) setup.py -q build_ext --inplace
 
 # Create the header only library.
