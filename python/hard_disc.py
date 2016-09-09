@@ -16,9 +16,9 @@
 
 """An example showing how to use the AABB.cc Python wrapper."""
 
+import aabb
 import math
 import random
-from aabb import *
 
 def overlaps(position1, position2, periodicity, boxSize, cutOff):
     # Compute separation vector.
@@ -87,13 +87,13 @@ radiusLarge = 0.5 * diameterLarge
 format = int(math.floor(math.log10(nSamples)))
 
 # Set the periodicity of the simulation box.
-periodicity = BoolVector(2)
+periodicity = aabb.BoolVector(2)
 periodicity[0] = True
 periodicity[1] = True
 
 # Work out base length of the simulation box.
 baseLength = math.pow((math.pi*(nSmall*diameterSmall + nLarge*diameterLarge))/(4*density), 0.5)
-boxSize = DoubleVector(2)
+boxSize = aabb.DoubleVector(2)
 boxSize[0] = baseLength
 boxSize[1] = baseLength
 
@@ -101,8 +101,8 @@ boxSize[1] = baseLength
 random.seed()
 
 # Initialise the AABB trees.
-treeSmall = Tree(2, maxDisp, periodicity, boxSize, nSmall)
-treeLarge = Tree(2, maxDisp, periodicity, boxSize, nLarge)
+treeSmall = aabb.Tree(2, maxDisp, periodicity, boxSize, nSmall)
+treeLarge = aabb.Tree(2, maxDisp, periodicity, boxSize, nLarge)
 
 # Initialise particle position vectors.
 positionsSmall = [[0 for i in range(2)] for j in range(nSmall)]
@@ -120,11 +120,11 @@ cutOff = 2 * radiusLarge
 cutOff *= cutOff
 
 # Initialise the position vector.
-position = DoubleVector(2)
+position = aabb.DoubleVector(2)
 
 # Initialise bounds vectors.
-lowerBound = DoubleVector(2)
-upperBound = DoubleVector(2)
+lowerBound = aabb.DoubleVector(2)
+upperBound = aabb.DoubleVector(2)
 
 for i in range(0, nLarge):
     # Insert the first particle directly.
@@ -150,10 +150,10 @@ for i in range(0, nLarge):
             upperBound[1] = position[1] + radiusLarge
 
             # Generate the AABB.
-            aabb = AABB(lowerBound, upperBound)
+            AABB = aabb.AABB(lowerBound, upperBound)
 
             # Query AABB overlaps.
-            particles = treeLarge.query(aabb)
+            particles = treeLarge.query(AABB)
 
             # Flag as no overlap (yet).
             isOverlap = False
@@ -197,10 +197,10 @@ for i in range(0, nSmall):
         upperBound[1] = position[1] + radiusSmall
 
         # Generate the AABB.
-        aabb = AABB(lowerBound, upperBound)
+        AABB = aabb.AABB(lowerBound, upperBound)
 
         # First query AABB overlaps with the large particles.
-        particles = treeLarge.query(aabb)
+        particles = treeLarge.query(AABB)
 
         # Flag as no overlap (yet).
         isOverlap = False
@@ -220,7 +220,7 @@ for i in range(0, nSmall):
             # No need to test the first particle.
             if i > 0:
                 # Now query AABB overlaps with other small particles.
-                particles = treeSmall.query(aabb)
+                particles = treeSmall.query(AABB)
 
                 # Test overlap.
                 for j in range(0, particles.size()):
@@ -283,10 +283,10 @@ for i in range(0, nSweeps):
         upperBound[1] = position[1] + radius
 
         # Generate the AABB.
-        aabb = AABB(lowerBound, upperBound)
+        AABB = aabb.AABB(lowerBound, upperBound)
 
         # Query AABB overlaps with small particles.
-        particles = treeSmall.query(aabb)
+        particles = treeSmall.query(AABB)
 
         # Flag as no overlap (yet).
         isOverlap = False
@@ -306,7 +306,7 @@ for i in range(0, nSweeps):
         # Advance to next overlap test.
         if not isOverlap:
             # Now query AABB overlaps with the large particles.
-            particles = treeLarge.query(aabb)
+            particles = treeLarge.query(AABB)
 
             # Set the cut-off.
             cutOff = radius + radiusLarge
