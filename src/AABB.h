@@ -28,6 +28,7 @@
 #define _AABB_H
 
 #include <cassert>
+#include <cstdlib>
 #include <iostream>
 #include <limits>
 #include <vector>
