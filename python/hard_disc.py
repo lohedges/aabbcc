@@ -16,6 +16,20 @@
 
 """An example showing how to use the AABB.cc Python wrapper."""
 
+# Note:
+# SWIG allows us direct access to STL vectors in python. See aabb.i for
+# full details of the mappings.
+#
+# As an example, you can create a STL vector containing 10 doubles
+# as follows:
+#
+#       doubleVector = aabb.DoubleVector(10)
+#
+# You can then access most of the usual member functions, e.g. to
+# print the size of the vector:
+#
+#       print doubleVector.size()
+
 import aabb
 import math
 import random
