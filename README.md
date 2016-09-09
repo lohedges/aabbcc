@@ -99,8 +99,9 @@ $ make python
 ```
 
 You will require [python2.7](https://www.python.org/download/releases/2.7)
-and [SWIG](http://www.swig.org). To use the module you will need the python
-file `aabb.py` and the shared object `_aabb.so` from the `python` directory.
+(and the development files if your package manager separates them) and
+[SWIG](http://www.swig.org). To use the module you will need the python file
+`aabb.py` and the shared object `_aabb.so` from the `python` directory.
 (The wrapper should also work with `python3`, but you'll need to manually
 modify the Makefile and `setup.py` file.)
 
