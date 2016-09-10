@@ -237,7 +237,7 @@ $(demos): %: %.cc $(library)
 # Build the python wrapper.
 .PHONY: python
 python: .check_python $(python_dir)/aabb.i $(python_dir)/setup.py
-	$(call colorecho, 1, "--> Building Python wrapper")
+	$(call colorecho, 2, "--> Building Python wrapper")
 	cd $(python_dir)                                    ;\
 	$(swig_binary) -builtin -c++ -python aabb.i         ;\
 	$(python_binary) setup.py -q build_ext --inplace
