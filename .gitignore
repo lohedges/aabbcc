@@ -1,0 +1,14 @@
+doc/
+lib/
+obj/
+header-only/
+demos/hard_disc
+python/build
+python/aabb.py
+python/aabb.pyc
+python/aabb_wrap.cxx
+python/_aabb.so
+python/trajectory.xyz
+.compiler_flags
+trajectory.xyz
+*.dSYM
