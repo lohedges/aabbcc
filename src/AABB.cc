@@ -447,7 +447,7 @@ namespace aabb
         // No need to update if the particle is still within its fattened AABB.
         if (nodes[node].aabb.contains(aabb)) return false;
 
-        // Remove the curent leaf.
+        // Remove the current leaf.
         removeLeaf(node);
 
         // Fatten the new AABB.
@@ -507,7 +507,7 @@ namespace aabb
         // No need to update if the particle is still within its fattened AABB.
         if (nodes[node].aabb.contains(aabb)) return false;
 
-        // Remove the curent leaf.
+        // Remove the current leaf.
         removeLeaf(node);
 
         // Fatten the new AABB.
