@@ -38,6 +38,15 @@ const unsigned int NULL_NODE = 0xffffffff;
 
 namespace aabb
 {
+    /*! \brief The axis-aligned bounding box object.
+
+        Axis-aligned bounding boxes (AABBs) store information for the minimum,
+        orthorhombic, bounding box for an object in two or three dimensional
+        space (the bounding box is either a rectangle, or rectangular prism).
+
+        Class member functions provide functionality merging and overlap
+        tests with other AABB objects.
+     */
     class AABB
     {
     public:
@@ -117,6 +126,18 @@ namespace aabb
         double surfaceArea;
     };
 
+    /*! \brief A node of the AABB tree.
+
+        Each node of the tree contains an AABB object which corresponds to a
+        particle, or a group of particles, in the simulation box. The AABB
+        objects of individual particles are "fattened" before they are stored
+        to avoid having to continually update and rebalance the tree when
+        displacements are small.
+
+        Nodes are aware of their position within in the tree. The isLeaf member
+        function allows the tree to query whether the node is a leaf, i.e. to
+        determine whether it holds a single particle.
+     */
     struct Node
     {
         /// Constructor.
@@ -150,6 +171,14 @@ namespace aabb
         bool isLeaf() const;
     };
 
+    /*! \brief The dynamic AABB tree.
+
+        The dynamic AABB tree is a hierarchical data structure that can be used
+        to efficiently query overlaps between objects of arbitrary shape and
+        size that lie inside of a simulation box. Support is provided for
+        periodic and non-periodic boxes, as well as boxes with partial
+        periodicity, e.g. periodic along specific axes.
+     */
     class Tree
     {
     public:
