@@ -360,6 +360,6 @@ for i in range(0, nSweeps):
         elif format == 4:
             print 'Saved configuration %5d of %5d' % (nSampled, nSamples)
         elif format == 5:
-                print 'Saved configuration %6d of %6d' % (nSampled, nSamples)
+            print 'Saved configuration %6d of %6d' % (nSampled, nSamples)
 
 print 'Done!'
