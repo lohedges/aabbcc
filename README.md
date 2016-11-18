@@ -42,8 +42,8 @@ A `Makefile` is included for building and installing the AABB library.
 To compile and install the library, documentation, python wrapper, and demos:
 
 ```bash
-$ make build
-$ make install
+make build
+make install
 ```
 
 By default, the library installs to `/usr/local`. Therefore, you may need admin
@@ -51,13 +51,13 @@ privileges for the final `make install` step above. An alternative is to change
 the install location:
 
 ```bash
-$ make PREFIX=MY_INSTALL_DIR install
+make PREFIX=MY_INSTALL_DIR install
 ```
 If you would rather use a header-only version of the library in your application,
 simply run:
 
 ```bash
-$ make header-only
+make header-only
 ```
 
 The resulting library header, `header-only/AABB.h`, can be directly included
@@ -67,7 +67,7 @@ Further details on using the Makefile can be found by running make without
 a target, i.e.
 
 ```bash
-$ make
+make
 ```
 
 ## Compiling and linking
@@ -81,21 +81,21 @@ in the code.
 Then to compile, we can use something like the following:
 
 ```bash
-$ g++ example.cc -laabb
+g++ example.cc -laabb
 ```
 
 This assumes that we have used the default install location `/usr/local`. If
 we specify an install location, we would use a command more like the following:
 
 ```bash
-$ g++ example.cc -I/my/path/include -L/my/path/lib -laabb
+g++ example.cc -I/my/path/include -L/my/path/lib -laabb
 ```
 
 ## Python wrapper
 A python wrapper can be built using:
 
 ```bash
-$ make python
+make python
 ```
 
 You will require [python2.7](https://www.python.org/download/releases/2.7)
@@ -165,8 +165,8 @@ and use [VMD](http://www.ks.uiuc.edu/Research/vmd/) to view the trajectory
 as follows:
 
 ```bash
-$ ./demos/hard_disc
-$ vmd trajectory.xyz -e demos/vmd.tcl
+./demos/hard_disc
+vmd trajectory.xyz -e demos/vmd.tcl
 ```
 
 A python version of the demo can be found at `python/hard_disc.py`. This
@@ -297,7 +297,7 @@ std::vector<particles> particles = tree.query(aabb);
 The AABB tree is self-testing if the library is compiled in development mode, i.e.
 
 ```bash
-$ make devel
+make devel
 ```
 
 ## Disclaimer
