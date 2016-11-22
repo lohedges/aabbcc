@@ -81,6 +81,9 @@ CXX := g++
 # Installation path.
 PREFIX := /usr/local
 
+# Python version
+PYTHON := 2.7
+
 # External libraries.
 LIBS :=
 
@@ -123,8 +126,8 @@ commit := $(shell git describe --abbrev=4 --dirty --always --tags 2> /dev/null)
 # Git branch information.
 branch := $(shell git rev-parse --abbrev-ref HEAD 2> /dev/null)
 
-# Python 2.7 binary.
-python_binary := $(shell which python2.7)
+# Python binary.
+python_binary := $(shell which python$(PYTHON))
 
 # SWIG binary.
 swig_binary := $(shell which swig)
@@ -192,8 +195,8 @@ devel release:
 .compiler_flags: force
 	@echo '$(CXXFLAGS)' | cmp -s - $@ || echo '$(CXXFLAGS)' > $@
 
-# Check that python2.7 and swig binaries are present.
-# This target ensures that all Python demos are recompiled if the .check_python file changes.
+# Check that python and swig binaries are present.
+# This target ensures that all python demos are recompiled if the .check_python file changes.
 .PHONY: force
 .check_python: force
 	@echo "Python found." | cmp -s - $@ || \
@@ -263,17 +266,17 @@ doc: $(headers) $(sources) $(dox_files)
 .PHONY: install
 install: build doc
 	$(call colorecho, 3, "--> Installing CXX static library $(library) to $(PREFIX)/lib")
-	$(call colorecho, 3, "--> Installing Python wrapper to $(PREFIX)/lib/python2.7")
+	$(call colorecho, 3, "--> Installing Python wrapper to $(PREFIX)/lib/python$(PYTHON)")
 	$(call colorecho, 3, "--> Installing CXX demos $(demos) to $(PREFIX)/share/$(project)-demos")
 	$(call colorecho, 3, "--> Installing CXX Doxygen documentation to $(PREFIX)/share/doc/$(project)")
 	$(install_cmd) -d $(iflags_exec) $(PREFIX)/lib
-	$(install_cmd) -d $(iflags_exec) $(PREFIX)/lib/python2.7
+	$(install_cmd) -d $(iflags_exec) $(PREFIX)/lib/python$(PYTHON)
 	$(install_cmd) -d $(iflags_exec) $(PREFIX)/include/$(project)
 	$(install_cmd) -d $(iflags_exec) $(PREFIX)/share/$(project)-demos
 	$(install_cmd) -d $(iflags_exec) $(PREFIX)/share/doc/$(project)
 	$(install_cmd) $(iflags) $(library) $(PREFIX)/lib
-	$(install_cmd) $(iflags) $(python_dir)/aabb.py $(PREFIX)/lib
-	$(install_cmd) $(iflags_exec) $(python_dir)/_aabb.so $(PREFIX)/lib/python2.7
+	$(install_cmd) $(iflags) $(python_dir)/aabb.py $(PREFIX)/lib/python$(PYTHON)
+	$(install_cmd) $(iflags_exec) $(python_dir)/_aabb.so $(PREFIX)/lib/python$(PYTHON)
 	$(install_cmd) $(iflags) $(headers) $(PREFIX)/include/$(project)
 	$(install_cmd) $(iflags) $(demo_sources) $(PREFIX)/share/$(project)-demos
 	$(install_cmd) $(iflags_exec) $(demos) $(PREFIX)/share/$(project)-demos
@@ -283,11 +286,12 @@ install: build doc
 .PHONY: uninstall
 uninstall:
 	$(call colorecho, 3, "--> Uninstalling CXX static library $(library) from $(PREFIX)/lib")
-	$(call colorecho, 3, "--> Uninstalling Python wrapper from $(PREFIX)/lib/python2.7")
+	$(call colorecho, 3, "--> Uninstalling Python wrapper from $(PREFIX)/lib/python$(PYTHON)")
 	$(call colorecho, 3, "--> Uninstalling CXX demos $(demos) from $(PREFIX)/share/$(project)-demos")
 	$(call colorecho, 3, "--> Uninstalling CXX Doxygen documentation from $(PREFIX)/share/doc/$(project)")
 	rm -f $(PREFIX)/$(library)
-	rm -f $(PREFIX)/lib/python2.7/_aabb.so
+	rm -f $(PREFIX)/lib/python$(PYTHON)/aabb.py
+	rm -f $(PREFIX)/lib/python$(PYTHON)/_aabb.so
 	rm -rf $(PREFIX)/include/$(project)
 	rm -rf $(PREFIX)/share/$(project)-demos
 	rm -rf $(PREFIX)/share/doc/$(project)
