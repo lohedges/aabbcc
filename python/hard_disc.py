@@ -127,7 +127,7 @@ positionsLarge = [[0 for i in range(2)] for j in range(nLarge)]
 #############################################################
 
 # First the large particles.
-print 'Inserting large particles into AABB tree ...'
+print('Inserting large particles into AABB tree ...')
 
 # Cut-off distance.
 cutOff = 2 * radiusLarge
@@ -184,11 +184,11 @@ for i in range(0, nLarge):
     # Store the position.
     positionsLarge[i] = [position[0], position[1]]
 
-print 'Tree generated!'
+print('Tree generated!')
 
 # Now fill the gaps with the small particles.
 
-print '\nInserting small particles into AABB tree ...'
+print('\nInserting small particles into AABB tree ...')
 
 for i in range(0, nSmall):
     # Initialise the overlap flag.
@@ -248,7 +248,7 @@ for i in range(0, nSmall):
     # Store the position.
     positionsSmall[i] = [position[0], position[1]]
 
-print 'Tree generated!'
+print('Tree generated!')
 
 #############################################################
 #     Perform the dynamics, updating the tree as we go.     #
@@ -257,7 +257,7 @@ print 'Tree generated!'
 # Clear the trajectory file.
 open('trajectory.xyz', 'w').close()
 
-print '\nRunning dynamics ...'
+print('\nRunning dynamics ...')
 
 sampleFlag = 0
 nSampled = 0
@@ -354,12 +354,12 @@ for i in range(0, nSweeps):
         printVMD('trajectory.xyz', positionsSmall, positionsLarge)
 
         if format == 2:
-            print 'Saved configuration %3d of %3d' % (nSampled, nSamples)
+            print('Saved configuration %3d of %3d' % (nSampled, nSamples))
         elif format == 3:
-            print 'Saved configuration %4d of %4d' % (nSampled, nSamples)
+            print('Saved configuration %4d of %4d' % (nSampled, nSamples))
         elif format == 4:
-            print 'Saved configuration %5d of %5d' % (nSampled, nSamples)
+            print('Saved configuration %5d of %5d' % (nSampled, nSamples))
         elif format == 5:
-            print 'Saved configuration %6d of %6d' % (nSampled, nSamples)
+            print('Saved configuration %6d of %6d' % (nSampled, nSamples))
 
-print 'Done!'
+print('Done!')
