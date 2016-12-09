@@ -401,7 +401,8 @@ int main(int argc, char** argv)
 
             printVMD("trajectory.xyz", positionsSmall, positionsLarge);
 
-            if      (format == 2) printf("Saved configuration %3d of %3d\n", nSampled, nSamples);
+            if      (format == 1) printf("Saved configuration %2d of %2d\n", nSampled, nSamples);
+            else if (format == 2) printf("Saved configuration %3d of %3d\n", nSampled, nSamples);
             else if (format == 3) printf("Saved configuration %4d of %4d\n", nSampled, nSamples);
             else if (format == 4) printf("Saved configuration %5d of %5d\n", nSampled, nSamples);
             else if (format == 5) printf("Saved configuration %6d of %6d\n", nSampled, nSamples);

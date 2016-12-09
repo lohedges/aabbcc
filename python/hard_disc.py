@@ -353,7 +353,9 @@ for i in range(0, nSweeps):
 
         printVMD('trajectory.xyz', positionsSmall, positionsLarge)
 
-        if format == 2:
+        if format == 1:
+            print('Saved configuration %2d of %2d' % (nSampled, nSamples))
+        elif format == 2:
             print('Saved configuration %3d of %3d' % (nSampled, nSamples))
         elif format == 3:
             print('Saved configuration %4d of %4d' % (nSampled, nSamples))
