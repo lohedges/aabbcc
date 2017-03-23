@@ -40,6 +40,7 @@ import aabb
 import math
 import random
 
+# Test whether two discs overlap.
 def overlaps(position1, position2, periodicity, boxSize, cutOff):
     # Compute separation vector.
     separation = [0] * 2
@@ -57,6 +58,7 @@ def overlaps(position1, position2, periodicity, boxSize, cutOff):
     else:
         return False
 
+# Compute the minimum image separation vector between disc centres.
 def minimumImage(separation, periodicity, boxSize):
     for i in range(0, 2):
         if separation[i] < -0.5*boxSize[i]:
@@ -64,6 +66,7 @@ def minimumImage(separation, periodicity, boxSize):
         elif separation[i] >= 0.5*boxSize[i]:
             separation[i] -= periodicity[i]*boxSize[i]
 
+# Apply periodic boundary conditions.
 def periodicBoundaries(position, periodicity, boxSize):
     for i in range(0, 2):
         if position[i] < 0:
@@ -71,6 +74,7 @@ def periodicBoundaries(position, periodicity, boxSize):
         elif position[i] >= boxSize[i]:
             position[i] -= periodicity[i]*boxSize[i]
 
+# Print current configuration to VMD trajectory file.
 def printVMD(fileName, positionsSmall, positionsLarge):
     with open(fileName, 'a') as trajectoryFile:
         trajectoryFile.write('%lu\n' % (len(positionsSmall) + len(positionsLarge)))
