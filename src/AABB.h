@@ -1,6 +1,6 @@
 /*
   Copyright (c) 2009 Erin Catto http://www.box2d.org
-  Copyright (c) 2016 Lester Hedges <lester.hedges+aabbcc@gmail.com>
+  Copyright (c) 2016-2017 Lester Hedges <lester.hedges+aabbcc@gmail.com>
 
   This software is provided 'as-is', without any express or implied
   warranty. In no event will the authors be held liable for any damages

@@ -1,6 +1,6 @@
 # AABB.cc
 
-Copyright &copy; 2016 [Lester Hedges](http://lesterhedges.net)
+Copyright &copy; 2016-2017 [Lester Hedges](http://lesterhedges.net)
 
 Released under the [Zlib](http://zlib.net/zlib_license.html) license.
 
