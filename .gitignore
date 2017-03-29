@@ -10,5 +10,6 @@ python/aabb_wrap.cxx
 python/_aabb.so
 python/trajectory.xyz
 .compiler_flags
+.check_python
 trajectory.xyz
 *.dSYM
