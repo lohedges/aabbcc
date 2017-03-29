@@ -151,7 +151,7 @@ used to avoid frequent updates of the AABB tree during dynamics (movement
 of the discs). Whenever an AABB changes position we need to delete it from
 the tree then reinsert the new one (at the updated position). This can be a
 costly operation. By "fattening" the AABBs a small amount it is possible to
-make many displacements of the objects before and update is triggered, i.e.
+make many displacements of the objects before an update is triggered, i.e.
 when one of the discs moves outside of its fattened AABB. During dynamics it
 is also possible for the tree to become unbalanced, leading to increasingly
 inefficient queries. Here trees are balanced using a surface area heuristic
@@ -177,12 +177,12 @@ A python version of the demo can be found at `python/hard_disc.py`. This
 provides an example of how to use the python wrapper module.
 
 ## Usage
-There area several steps that go into building and using an AABB tree. Below
-are some examples of how to make use of the various objects within the library.
+There are several steps that go into building and using an AABB tree. Below
+are some examples showing how to use the various objects within the library.
 
 ### AABB
 This should be the minimum enclosing axis-aligned bounding box for an object
-in your simulation box. There is no need to fatten the AABB. This will be done
+in your simulation box. There is no need to fatten the AABB; this will be done
 when an object is inserted into the AABB tree. For example, to create an AABB
 for a two-dimensional disc we could do the following:
 
@@ -204,7 +204,7 @@ aabb::AABB aabb(lowerBound, upperBound);
 ### Tree
 #### Initialising a tree
 To instantiate dynamic AABB trees for a periodic two-component system in
-two dimensions.
+two dimensions:
 
 ```cpp
 // Fattening factor.
@@ -275,6 +275,7 @@ You can query the tree for overlaps with a specific particle, or for overlaps
 with an arbitrary AABB object. The `query` method returns a vector containing
 the indices of the AABBs that overlap. You'll then need to test the objects
 enclosed by these AABBs for actual overlap with the particle of interest.
+(using your own overlap code).
 
 For a particle already in the tree:
 
