@@ -295,7 +295,7 @@ std::vector<double> upperBound({10, 10}};
 aabb::AABB aabb(lowerBound, upperBound);
 
 // Query the tree for overlap with the AABB.
-std::vector<particles> particles = tree.query(aabb);
+std::vector<unsigned int> particles = tree.query(aabb);
 ```
 
 ## Tests
