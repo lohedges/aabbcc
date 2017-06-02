@@ -251,8 +251,8 @@ namespace aabb
         unsigned int insertParticle(std::vector<double>&, std::vector<double>&);
 
         //! Remove a particle from the tree.
-        /*! \param node
-                The node index where the particle resides.
+        /*! \param particle
+                The particle index (particleMap will be used to map the node).
          */
         void removeParticle(unsigned int);
 

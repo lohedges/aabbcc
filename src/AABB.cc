@@ -402,8 +402,11 @@ namespace aabb
         return node;
     }
 
-    void Tree::removeParticle(unsigned int node)
+    void Tree::removeParticle(unsigned int particle)
     {
+        // Extract the node index.
+        unsigned int node = particleMap[particle];
+
         assert(0 <= node && node < nodeCapacity);
         assert(nodes[node].isLeaf());
 
