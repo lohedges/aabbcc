@@ -40,12 +40,12 @@ namespace aabb
 {
     /*! \brief The axis-aligned bounding box object.
 
-        Axis-aligned bounding boxes (AABBs) store information for the minimum,
-        orthorhombic, bounding box for an object in two or three dimensional
+        Axis-aligned bounding boxes (AABBs) store information for the minimum
+        orthorhombic bounding-box for an object in two- or three-dimensional
         space (the bounding box is either a rectangle, or rectangular prism).
 
-        Class member functions provide functionality merging and overlap
-        tests with other AABB objects.
+        Class member functions provide functionality for merging AABB objects
+        and testing overlap with other AABBs.
      */
     class AABB
     {
