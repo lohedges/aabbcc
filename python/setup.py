@@ -8,7 +8,6 @@ from distutils.core import setup, Extension
 
 aabb_module = Extension('_aabb',
                          sources = ['aabb_wrap.cxx', '../src/AABB.cc'],
-                         extra_compile_args = ['-std=c++11'],
                         )
 
 setup (name = 'aabb',
