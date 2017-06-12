@@ -27,6 +27,7 @@
 #ifndef _AABB_H
 #define _AABB_H
 
+#include <algorithm>
 #include <cassert>
 #include <cstdlib>
 #include <iostream>

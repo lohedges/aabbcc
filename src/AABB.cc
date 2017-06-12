@@ -168,8 +168,7 @@ namespace aabb
 
         // Initialise the periodicity vector.
         periodicity.resize(dimension);
-        if (dimension == 2) periodicity = {false, false};
-        else                periodicity = {false, false, false};
+        std::fill(periodicity.begin(), periodicity.end(), false);
 
         // Initialise the tree.
         root = NULL_NODE;
