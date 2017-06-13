@@ -32,6 +32,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <limits>
+#include <map>
 #include <vector>
 
 /// Null node flag.
@@ -228,28 +229,28 @@ namespace aabb
         void setBoxSize(const std::vector<double>&);
 
         //! Insert a particle into the tree (point particle).
-        /*! \param position
+        /*! \param index
+                The index of the particle.
+
+            \param position
                 The position vector of the particle.
 
             \param radius
                 The radius of the particle.
-
-            \return node
-                The corresponding node index in the tree.
          */
-        unsigned int insertParticle(std::vector<double>&, double);
+        void insertParticle(unsigned int, std::vector<double>&, double);
 
         //! Insert a particle into the tree (arbitrary shape with bounding box).
-        /*! \param lowerBound
+        /*! \param index
+                The index of the particle.
+
+            \param lowerBound
                 The lower bound in each dimension.
 
             \param upperBound
                 The upper bound in each dimension.
-
-            \return node
-                The corresponding node index in the tree.
          */
-        unsigned int insertParticle(std::vector<double>&, std::vector<double>&);
+        void insertParticle(unsigned int, std::vector<double>&, std::vector<double>&);
 
         //! Remove a particle from the tree.
         /*! \param particle
@@ -391,7 +392,7 @@ namespace aabb
         std::vector<double> posMinImage;
 
         /// A map between particle and node indices.
-        std::vector<unsigned int> particleMap;
+        std::map<unsigned int, unsigned int> particleMap;
 
         //! Allocate a new node.
         /*! \return

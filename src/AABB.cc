@@ -300,7 +300,7 @@ namespace aabb
         nodeCount--;
     }
 
-    unsigned int Tree::insertParticle(std::vector<double>& position, double radius)
+    void Tree::insertParticle(unsigned int particle, std::vector<double>& position, double radius)
     {
         // Validate the dimensionality of the position vector.
         if (position.size() != dimension)
@@ -339,15 +339,13 @@ namespace aabb
         insertLeaf(node);
 
         // Add the new particle to the map.
-        particleMap.push_back(node);
+        particleMap.insert(std::map<unsigned int, unsigned int>::value_type(particle, node));
 
         // Store the particle index.
-        nodes[node].particle = particleMap.size() - 1;
-
-        return node;
+        nodes[node].particle = particle;
     }
 
-    unsigned int Tree::insertParticle(std::vector<double>& lowerBound, std::vector<double>& upperBound)
+    void Tree::insertParticle(unsigned int particle, std::vector<double>& lowerBound, std::vector<double>& upperBound)
     {
         // Validate the dimensionality of the bounds vectors.
         if ((lowerBound.size() != dimension) || (upperBound.size() != dimension))
@@ -393,18 +391,25 @@ namespace aabb
         insertLeaf(node);
 
         // Add the new particle to the map.
-        particleMap.push_back(node);
+        particleMap.insert(std::map<unsigned int, unsigned int>::value_type(particle, node));
 
         // Store the particle index.
-        nodes[node].particle = particleMap.size() - 1;
-
-        return node;
+        nodes[node].particle = particle;
     }
 
     void Tree::removeParticle(unsigned int particle)
     {
+        // Map iterator.
+        std::map<unsigned int, unsigned int>::iterator it;
+
+        // Find the particle.
+        it = particleMap.find(particle);
+
         // Extract the node index.
-        unsigned int node = particleMap[particle];
+        unsigned int node = it->second;
+
+        // Erase the particle from the map.
+        particleMap.erase(it);
 
         assert(0 <= node && node < nodeCapacity);
         assert(nodes[node].isLeaf());
@@ -423,7 +428,7 @@ namespace aabb
         }
 
         // Extract the node index.
-        unsigned int node = particleMap[particle];
+        unsigned int node = particleMap.find(particle)->second;
 
         assert(0 <= node && node < nodeCapacity);
         assert(nodes[node].isLeaf());
@@ -482,7 +487,7 @@ namespace aabb
         }
 
         // Extract the node index.
-        unsigned int node = particleMap[particle];
+        unsigned int node = particleMap.find(particle)->second;
 
         assert(0 <= node && node < nodeCapacity);
         assert(nodes[node].isLeaf());
@@ -534,10 +539,10 @@ namespace aabb
 
     std::vector<unsigned int> Tree::query(unsigned int particle)
     {
-        assert(particle < particleMap.size());
+        assert(particleMap.count(particle));
 
         // Test overlap of particle AABB against all other particles.
-        return query(particle, nodes[particleMap[particle]].aabb);
+        return query(particle, nodes[particleMap.find(particle)->second].aabb);
     }
 
     std::vector<unsigned int> Tree::query(unsigned int particle, const AABB& aabb)
@@ -602,7 +607,7 @@ namespace aabb
     std::vector<unsigned int> Tree::query(const AABB& aabb)
     {
         // Test overlap of AABB against all particles.
-        return query(particleMap.size() + 1, aabb);
+        return query(std::numeric_limits<unsigned int>::max(), aabb);
     }
 
     const AABB& Tree::getAABB(unsigned int particle)
