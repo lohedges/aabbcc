@@ -16,8 +16,8 @@ matrix:
           packages:
             - g++-4.9
             - python
-            - python3.5
-            - python3.5-dev
+            - python3.4
+            - python3.4-dev
             - swig
       env: COMPILER=g++-4.9
     - compiler: gcc
@@ -29,8 +29,8 @@ matrix:
           packages:
             - g++-5
             - python
-            - python3.5
-            - python3.5-dev
+            - python3.4
+            - python3.4-dev
             - swig
       env: COMPILER=g++-5
     - compiler: clang
@@ -43,8 +43,8 @@ matrix:
           packages:
             - clang-3.6
             - python
-            - python3.5
-            - python3.5-dev
+            - python3.4
+            - python3.4-dev
             - swig
       env: COMPILER=clang++-3.6
     - compiler: clang
@@ -57,8 +57,8 @@ matrix:
           packages:
             - clang-3.7
             - python
-            - python3.5
-            - python3.5-dev
+            - python3.4
+            - python3.4-dev
             - swig
       env: COMPILER=clang++-3.7
 
@@ -67,4 +67,4 @@ before_script:
 
 script:
   - make CXX=$COMPILER devel
-  - make CXX=$COMPILER PYTHON=3.5 devel
+  - make CXX=$COMPILER PYTHON=3.4 devel
