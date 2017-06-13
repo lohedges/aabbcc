@@ -189,7 +189,7 @@ for i in range(0, nLarge):
                     break
 
     # Insert the particle into the tree.
-    treeLarge.insertParticle(position, radiusLarge)
+    treeLarge.insertParticle(i, position, radiusLarge)
 
     # Store the position.
     positionsLarge[i] = [position[0], position[1]]
@@ -253,7 +253,7 @@ for i in range(0, nSmall):
                         break
 
     # Insert the particle into the tree.
-    treeSmall.insertParticle(position, radiusSmall)
+    treeSmall.insertParticle(i, position, radiusSmall)
 
     # Store the position.
     positionsSmall[i] = [position[0], position[1]]
