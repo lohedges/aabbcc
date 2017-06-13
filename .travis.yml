@@ -12,9 +12,12 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
+            - deadsnakes
           packages:
             - g++-4.9
             - python
+            - python3.5
+            - python3.5-dev
             - swig
       env: COMPILER=g++-4.9
     - compiler: gcc
@@ -22,9 +25,12 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
+            - deadsnakes
           packages:
             - g++-5
             - python
+            - python3.5
+            - python3.5-dev
             - swig
       env: COMPILER=g++-5
     - compiler: clang
@@ -33,9 +39,12 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.6
+            - deadsnakes
           packages:
             - clang-3.6
             - python
+            - python3.5
+            - python3.5-dev
             - swig
       env: COMPILER=clang++-3.6
     - compiler: clang
@@ -44,9 +53,12 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.7
+            - deadsnakes
           packages:
             - clang-3.7
             - python
+            - python3.5
+            - python3.5-dev
             - swig
       env: COMPILER=clang++-3.7
 
@@ -55,3 +67,4 @@ before_script:
 
 script:
   - make CXX=$COMPILER devel
+  - make CXX=$COMPILER PYTHON=3.5 devel
