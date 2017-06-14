@@ -288,7 +288,7 @@ enclosed by these AABBs for actual overlap with the particle of interest.
 For a particle already in the tree:
 
 ```cpp
-// Query AABB overlaps with the 10th particle in the tree.
+// Query AABB overlaps for particle with key 10.
 std::vector<unsigned int> particles = tree.query(10);
 ```
 
