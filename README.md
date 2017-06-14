@@ -243,6 +243,9 @@ To insert a particle (object) into the tree:
 // Particle radius.
 double radius = 1.0;
 
+// Particle index (key).
+unsigned int index = 1;
+
 // Set the particle position.
 std::vector<double> position({10.0, 10.0});
 
@@ -251,13 +254,17 @@ std::vector<double> lowerBound({position[0] - radius, position[1] - radius});
 std::vector<double> upperBound({position[0] + radius, position[1] + radius});
 
 // Insert particle into the tree.
-tree.insertParticle(position, lowerBound, upperBound);
+tree.insertParticle(index, position, lowerBound, upperBound);
 ```
+
+Here `index` is a key that is used to create a map between particles and nodes
+in the AABB tree. The key should be unique to the particle and can take any value
+between 0 and `std::numeric_limits<unsigned int>::max() - 1`.
 
 For spherical objects, the insertion can be simplified to:
 
 ```cpp
-tree.insertParticle(position, radius);
+tree.insertParticle(index, position, radius);
 ```
 
 #### Removing a particle
@@ -268,9 +275,8 @@ you may wish to remove particles from the tree. To do so:
 tree.removeParticle(index);
 ```
 
-where `index` is the index of the particle to be removed. Indices are ordered
-in the sequence in which particles were inserted into the tree (you'll need to
-keep track of these).
+where `index` is the key for the particle to be removed. (You'll need to
+keep track of the keys).
 
 #### Querying the tree
 You can query the tree for overlaps with a specific particle, or for overlaps
