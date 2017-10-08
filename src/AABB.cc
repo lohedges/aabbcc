@@ -419,6 +419,13 @@ namespace aabb
         // Find the particle.
         it = particleMap.find(particle);
 
+        // The particle doesn't exist.
+        if (it == particleMap.end())
+        {
+            std::cerr << "[ERROR]: Invalid particle index!" << '\n';
+            exit(EXIT_FAILURE);
+        }
+
         // Extract the node index.
         unsigned int node = it->second;
 
@@ -441,8 +448,21 @@ namespace aabb
             exit(EXIT_FAILURE);
         }
 
+        // Map iterator.
+        std::map<unsigned int, unsigned int>::iterator it;
+
+        // Find the particle.
+        it = particleMap.find(particle);
+
+        // The particle doesn't exist.
+        if (it == particleMap.end())
+        {
+            std::cerr << "[ERROR]: Invalid particle index!" << '\n';
+            exit(EXIT_FAILURE);
+        }
+
         // Extract the node index.
-        unsigned int node = particleMap.find(particle)->second;
+        unsigned int node = it->second;
 
         assert(0 <= node && node < nodeCapacity);
         assert(nodes[node].isLeaf());
@@ -493,6 +513,13 @@ namespace aabb
 
     bool Tree::updateParticle(unsigned int particle, std::vector<double>& lowerBound, std::vector<double>& upperBound)
     {
+        // Make sure that this is a valid particle.
+        if (particleMap.count(particle) == 0)
+        {
+            std::cerr << "[ERROR]: Invalid particle index!" << '\n';
+            exit(EXIT_FAILURE);
+        }
+
         // Validate the dimensionality of the bounds vectors.
         if ((lowerBound.size() != dimension) && (upperBound.size() != dimension))
         {
@@ -500,8 +527,21 @@ namespace aabb
             exit(EXIT_FAILURE);
         }
 
+        // Map iterator.
+        std::map<unsigned int, unsigned int>::iterator it;
+
+        // Find the particle.
+        it = particleMap.find(particle);
+
+        // The particle doesn't exist.
+        if (it == particleMap.end())
+        {
+            std::cerr << "[ERROR]: Invalid particle index!" << '\n';
+            exit(EXIT_FAILURE);
+        }
+
         // Extract the node index.
-        unsigned int node = particleMap.find(particle)->second;
+        unsigned int node = it->second;
 
         assert(0 <= node && node < nodeCapacity);
         assert(nodes[node].isLeaf());
