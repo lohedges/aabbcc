@@ -448,78 +448,23 @@ namespace aabb
             exit(EXIT_FAILURE);
         }
 
-        // Map iterator.
-        std::map<unsigned int, unsigned int>::iterator it;
-
-        // Find the particle.
-        it = particleMap.find(particle);
-
-        // The particle doesn't exist.
-        if (it == particleMap.end())
-        {
-            std::cerr << "[ERROR]: Invalid particle index!" << '\n';
-            exit(EXIT_FAILURE);
-        }
-
-        // Extract the node index.
-        unsigned int node = it->second;
-
-        assert(0 <= node && node < nodeCapacity);
-        assert(nodes[node].isLeaf());
-
         // AABB bounds vectors.
         std::vector<double> lowerBound(dimension);
         std::vector<double> upperBound(dimension);
-
-        // AABB size in each dimension.
-        double size[dimension];
 
         // Compute the AABB limits.
         for (unsigned i=0;i<dimension;i++)
         {
             lowerBound[i] = position[i] - radius;
             upperBound[i] = position[i] + radius;
-            size[i] = upperBound[i] - lowerBound[i];
         }
 
-        // Create the new AABB.
-        AABB aabb(lowerBound, upperBound);
-
-        // No need to update if the particle is still within its fattened AABB.
-        if (nodes[node].aabb.contains(aabb)) return false;
-
-        // Remove the current leaf.
-        removeLeaf(node);
-
-        // Fatten the new AABB.
-        for (unsigned i=0;i<dimension;i++)
-        {
-            lowerBound[i] -= skinThickness * size[i];
-            upperBound[i] += skinThickness * size[i];
-        }
-
-        // Assign the new AABB.
-        nodes[node].aabb = aabb;
-
-        // Update the surface area and centroid.
-        nodes[node].aabb.surfaceArea = nodes[node].aabb.computeSurfaceArea();
-        nodes[node].aabb.centre = nodes[node].aabb.computeCentre();
-
-        // Insert a new leaf node.
-        insertLeaf(node);
-
-        return true;
+        // Update the particle.
+        return updateParticle(particle, lowerBound, upperBound);
     }
 
     bool Tree::updateParticle(unsigned int particle, std::vector<double>& lowerBound, std::vector<double>& upperBound)
     {
-        // Make sure that this is a valid particle.
-        if (particleMap.count(particle) == 0)
-        {
-            std::cerr << "[ERROR]: Invalid particle index!" << '\n';
-            exit(EXIT_FAILURE);
-        }
-
         // Validate the dimensionality of the bounds vectors.
         if ((lowerBound.size() != dimension) && (upperBound.size() != dimension))
         {
