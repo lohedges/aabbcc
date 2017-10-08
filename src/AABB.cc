@@ -302,6 +302,13 @@ namespace aabb
 
     void Tree::insertParticle(unsigned int particle, std::vector<double>& position, double radius)
     {
+        // Make sure the particle doesn't already exist.
+        if (particleMap.count(particle) != 0)
+        {
+            std::cerr << "[ERROR]: Particle already exists in tree!" << '\n';
+            exit(EXIT_FAILURE);
+        }
+
         // Validate the dimensionality of the position vector.
         if (position.size() != dimension)
         {
@@ -347,6 +354,13 @@ namespace aabb
 
     void Tree::insertParticle(unsigned int particle, std::vector<double>& lowerBound, std::vector<double>& upperBound)
     {
+        // Make sure the particle doesn't already exist.
+        if (particleMap.count(particle) != 0)
+        {
+            std::cerr << "[ERROR]: Particle already exists in tree!" << '\n';
+            exit(EXIT_FAILURE);
+        }
+
         // Validate the dimensionality of the bounds vectors.
         if ((lowerBound.size() != dimension) || (upperBound.size() != dimension))
         {
