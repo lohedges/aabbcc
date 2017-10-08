@@ -539,7 +539,12 @@ namespace aabb
 
     std::vector<unsigned int> Tree::query(unsigned int particle)
     {
-        assert(particleMap.count(particle));
+        // Make sure that this is a valid particle.
+        if (particleMap.count(particle) == 0)
+        {
+            std::cerr << "[ERROR]: Invalid particle index!" << '\n';
+            exit(EXIT_FAILURE);
+        }
 
         // Test overlap of particle AABB against all other particles.
         return query(particle, nodes[particleMap.find(particle)->second].aabb);
@@ -606,6 +611,12 @@ namespace aabb
 
     std::vector<unsigned int> Tree::query(const AABB& aabb)
     {
+        // Make sure the tree isn't empty.
+        if (particleMap.size() == 0)
+        {
+            return std::vector<unsigned int>();
+        }
+
         // Test overlap of AABB against all particles.
         return query(std::numeric_limits<unsigned int>::max(), aabb);
     }
