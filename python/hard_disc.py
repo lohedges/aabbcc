@@ -29,7 +29,7 @@
 # As an example, you can create a STL vector containing 10 doubles
 # as follows:
 #
-#       doubleVector = aabb.DoubleVector(10)
+#       doubleVector = aabb.VectorDouble(10)
 #
 # You can then access most of the usual member functions, e.g. to
 # print the size of the vector:
@@ -111,13 +111,13 @@ radiusLarge = 0.5 * diameterLarge
 format = int(math.floor(math.log10(nSamples)))
 
 # Set the periodicity of the simulation box.
-periodicity = aabb.BoolVector(2)
+periodicity = aabb.VectorBool(2)
 periodicity[0] = True
 periodicity[1] = True
 
 # Work out base length of the simulation box.
 baseLength = math.pow((math.pi*(nSmall*diameterSmall + nLarge*diameterLarge))/(4*density), 0.5)
-boxSize = aabb.DoubleVector(2)
+boxSize = aabb.VectorDouble(2)
 boxSize[0] = baseLength
 boxSize[1] = baseLength
 
@@ -144,11 +144,11 @@ cutOff = 2 * radiusLarge
 cutOff *= cutOff
 
 # Initialise the position vector.
-position = aabb.DoubleVector(2)
+position = aabb.VectorDouble(2)
 
 # Initialise bounds vectors.
-lowerBound = aabb.DoubleVector(2)
-upperBound = aabb.DoubleVector(2)
+lowerBound = aabb.VectorDouble(2)
+upperBound = aabb.VectorDouble(2)
 
 for i in range(0, nLarge):
     # Insert the first particle directly.
