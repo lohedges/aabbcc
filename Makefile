@@ -109,7 +109,7 @@ header_only_dir := header-only
 library := $(lib_dir)/lib$(project).a
 
 # Header only library file.
-header_only_lib := $(header_only_dir)/$(project_upper).h
+header_only_lib := $(header_only_dir)/$(project_upper).hpp
 
 # Install command.
 install_cmd := install

@@ -62,7 +62,7 @@ simply run:
 make header-only
 ```
 
-The resulting library header, `header-only/AABB.h`, can be directly included
+The resulting library header, `header-only/AABB.hpp`, can be directly included
 in your source code without the need for compiling and linking.
 
 Further details on using the Makefile can be found by running make without
