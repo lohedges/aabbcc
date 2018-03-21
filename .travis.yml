@@ -1,5 +1,3 @@
-sudo: required
-dist: precise
 language: cpp
 
 notifications:
@@ -7,64 +5,86 @@ notifications:
 
 matrix:
   include:
-    - compiler: gcc
+
+# GCC builds.
+
+    - os: linux
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - deadsnakes
           packages:
             - g++-4.9
-            - python
-            - python3.4
-            - python3.4-dev
             - swig
-      env: COMPILER=g++-4.9
-    - compiler: gcc
+      env:
+         - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+
+    - os: linux
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - deadsnakes
           packages:
             - g++-5
-            - python
-            - python3.4
-            - python3.4-dev
             - swig
-      env: COMPILER=g++-5
-    - compiler: clang
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-            - deadsnakes
-          packages:
-            - clang-3.6
-            - python
-            - python3.4
-            - python3.4-dev
-            - swig
-      env: COMPILER=clang++-3.6
-    - compiler: clang
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-            - deadsnakes
-          packages:
-            - clang-3.7
-            - python
-            - python3.4
-            - python3.4-dev
-            - swig
-      env: COMPILER=clang++-3.7
+      env:
+         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
 
-before_script:
-  - sudo updatedb
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+            - swig
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+            - swig
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+
+# Clang builds.
+# Note that we pull in g++-6 in order to have recent libstdc++.
+# The version of libc++ available with Trusty does not work correctly,
+# since the libstdc++ path is found first when linking.
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-4.0
+          packages:
+            - clang-4.0
+            - g++-6
+            - swig
+      env:
+        - MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0"
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-5.0
+          packages:
+            - clang-5.0
+            - g++-6
+            - swig
+      env:
+        - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
+
+before_install:
+  - eval "${MATRIX_EVAL}"
 
 script:
-  - make CXX=$COMPILER devel
-  - make CXX=$COMPILER PYTHON=3.4 devel
+  - make devel
