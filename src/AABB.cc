@@ -96,8 +96,8 @@ namespace aabb
 
         for (unsigned int i=0;i<lowerBound.size();i++)
         {
-            if (lowerBound[i] < aabb.lowerBound[i]) return false;
-            if (upperBound[i] > aabb.upperBound[i]) return false;
+            if (aabb.lowerBound[i] < lowerBound[i]) return false;
+            if (aabb.upperBound[i] > upperBound[i]) return false;
         }
 
         return true;
