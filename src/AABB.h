@@ -252,11 +252,17 @@ namespace aabb
          */
         void insertParticle(unsigned int, std::vector<double>&, std::vector<double>&);
 
+        /// Return the number of particles in the tree.
+        unsigned int nParticles();
+
         //! Remove a particle from the tree.
         /*! \param particle
                 The particle index (particleMap will be used to map the node).
          */
         void removeParticle(unsigned int);
+
+        /// Remove all particles from the tree.
+        void removeAll();
 
         //! Update the tree if a particle moves outside its fattened AABB.
         /*! \param particle

@@ -411,6 +411,11 @@ namespace aabb
         nodes[node].particle = particle;
     }
 
+    unsigned int Tree::nParticles()
+    {
+        return particleMap.size();
+    }
+
     void Tree::removeParticle(unsigned int particle)
     {
         // Map iterator.
@@ -437,6 +442,30 @@ namespace aabb
 
         removeLeaf(node);
         freeNode(node);
+    }
+
+    void Tree::removeAll()
+    {
+        // Iterator pointing to the start of the particle map.
+        std::map<unsigned int, unsigned int>::iterator it = particleMap.begin();
+
+        // Iterate over the map.
+        while (it != particleMap.end())
+        {
+            // Extract the node index.
+            unsigned int node = it->second;
+
+            assert(0 <= node && node < nodeCapacity);
+            assert(nodes[node].isLeaf());
+
+            removeLeaf(node);
+            freeNode(node);
+
+            it++;
+        }
+
+        // Clear the particle map.
+        particleMap.clear();
     }
 
     bool Tree::updateParticle(unsigned int particle, std::vector<double>& position, double radius)
