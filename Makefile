@@ -309,9 +309,10 @@ clobber:
 	rm -rf $(obj_dir)
 	rm -rf $(lib_dir)
 	rm -rf $(python_dir)/build
-	rm -rf $(python_dir)/_aabb.so
+	rm -rf $(python_dir)/_aabb.*
 	rm -rf $(python_dir)/aabb_wrap.cxx
 	rm -rf $(python_dir)/aabb.py*
+	rm -rf $(python_dir)/__pycache__
 	rm -rf $(header_only_dir)
 	rm -rf doc
 	rm -f $(demos)
