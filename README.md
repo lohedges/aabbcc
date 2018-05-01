@@ -1,6 +1,6 @@
 # AABB.cc
 
-Copyright &copy; 2016-2017 [Lester Hedges](http://lesterhedges.net)
+Copyright &copy; 2016-2018 [Lester Hedges](http://lesterhedges.net)
 
 [![Build Status](https://travis-ci.org/lohedges/aabbcc.svg?branch=master)](https://travis-ci.org/lohedges/aabbcc)
 
