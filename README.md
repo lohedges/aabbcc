@@ -111,6 +111,10 @@ If you wish to use a different version of python, simply override the
 make PYTHON=3.5 python
 ```
 
+(Note that you'll also need to update the shebang at the top of
+[hard_disc.py](python/hard_disc.py) to reflect your changes in order for the
+python demo to work.)
+
 ## Example
 Let's consider a two-component system of hard discs in two dimensions, where
 one species is much larger than the other. Making use of AABB trees, we can
