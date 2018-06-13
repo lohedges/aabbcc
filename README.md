@@ -12,7 +12,7 @@ A C++ implementation of a dynamic bounding volume hierarchy
 axis-aligned bounding boxes ([AABBs](https://en.wikipedia.org/wiki/Minimum_bounding_box)).
 The data structure provides an efficient way of detecting potential overlap
 between objects of arbitrary shape and size and is commonly used in
-computer games engines for collision detection and ray tracing.
+computer game engines for collision detection and ray tracing.
 
 Because of their speed and flexibility, AABB trees are also well suited
 to overlap detection in physics applications, such as molecular simulation.
