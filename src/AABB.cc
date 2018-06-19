@@ -26,6 +26,8 @@
 
 #include "AABB.h"
 
+const unsigned int MAX_DIMENSIONS = 3;
+
 namespace aabb
 {
     AABB::AABB()
@@ -291,7 +293,7 @@ namespace aabb
 
     void Tree::freeNode(unsigned int node)
     {
-        assert(0 <= node && node < nodeCapacity);
+        assert(node < nodeCapacity);
         assert(0 < nodeCount);
 
         nodes[node].next = freeList;
@@ -320,7 +322,7 @@ namespace aabb
         unsigned int node = allocateNode();
 
         // AABB size in each dimension.
-        double size[dimension];
+        double size[MAX_DIMENSIONS];
 
         // Compute the AABB limits.
         for (unsigned i=0;i<dimension;i++)
@@ -372,7 +374,7 @@ namespace aabb
         unsigned int node = allocateNode();
 
         // AABB size in each dimension.
-        double size[dimension];
+        double size[MAX_DIMENSIONS];
 
         // Compute the AABB limits.
         for (unsigned i=0;i<dimension;i++)
@@ -437,7 +439,7 @@ namespace aabb
         // Erase the particle from the map.
         particleMap.erase(it);
 
-        assert(0 <= node && node < nodeCapacity);
+        assert(node < nodeCapacity);
         assert(nodes[node].isLeaf());
 
         removeLeaf(node);
@@ -455,7 +457,7 @@ namespace aabb
             // Extract the node index.
             unsigned int node = it->second;
 
-            assert(0 <= node && node < nodeCapacity);
+            assert(node < nodeCapacity);
             assert(nodes[node].isLeaf());
 
             removeLeaf(node);
@@ -517,11 +519,11 @@ namespace aabb
         // Extract the node index.
         unsigned int node = it->second;
 
-        assert(0 <= node && node < nodeCapacity);
+        assert(node < nodeCapacity);
         assert(nodes[node].isLeaf());
 
         // AABB size in each dimension.
-        double size[dimension];
+        double size[MAX_DIMENSIONS];
 
         // Compute the AABB limits.
         for (unsigned i=0;i<dimension;i++)
@@ -834,8 +836,8 @@ namespace aabb
         unsigned int left = nodes[node].left;
         unsigned int right = nodes[node].right;
 
-        assert((0 <= left) && (left < nodeCapacity));
-        assert((0 <= right) && (right < nodeCapacity));
+        assert(left < nodeCapacity);
+        assert(right < nodeCapacity);
 
         int currentBalance = nodes[right].height - nodes[left].height;
 
@@ -845,8 +847,8 @@ namespace aabb
             unsigned int rightLeft = nodes[right].left;
             unsigned int rightRight = nodes[right].right;
 
-            assert((0 <= rightLeft) && (rightLeft < nodeCapacity));
-            assert((0 <= rightRight) && (rightRight < nodeCapacity));
+            assert(rightLeft < nodeCapacity);
+            assert(rightRight < nodeCapacity);
 
             // Swap node and its right-hand child.
             nodes[right].left = node;
@@ -898,8 +900,8 @@ namespace aabb
             unsigned int leftLeft = nodes[left].left;
             unsigned int leftRight = nodes[left].right;
 
-            assert((0 <= leftLeft) && (leftLeft < nodeCapacity));
-            assert((0 <= leftRight) && (leftRight < nodeCapacity));
+            assert(leftLeft < nodeCapacity);
+            assert(leftRight < nodeCapacity);
 
             // Swap node and its left-hand child.
             nodes[left].left = node;
@@ -955,7 +957,7 @@ namespace aabb
 
     unsigned int Tree::computeHeight(unsigned int node) const
     {
-        assert((0 <= node) && (node < nodeCapacity));
+        assert(node < nodeCapacity);
 
         if (nodes[node].isLeaf()) return 0;
 
@@ -1021,7 +1023,7 @@ namespace aabb
 
         while (freeIndex != NULL_NODE)
         {
-            assert((0 <= freeIndex) && (freeIndex < nodeCapacity));
+            assert(freeIndex < nodeCapacity);
             freeIndex = nodes[freeIndex].next;
             freeCount++;
         }
@@ -1033,7 +1035,7 @@ namespace aabb
 
     void Tree::rebuild()
     {
-        unsigned int nodeIndices[nodeCount];
+        std::vector<unsigned int> nodeIndices(nodeCount);
         unsigned int count = 0;
 
         for (unsigned int i=0;i<nodeCapacity;i++)
@@ -1115,8 +1117,8 @@ namespace aabb
             return;
         }
 
-        assert((0 <= left) && (left < nodeCapacity));
-        assert((0 <= right) && (right < nodeCapacity));
+        assert(left < nodeCapacity);
+        assert(right < nodeCapacity);
 
         assert(nodes[left].parent == node);
         assert(nodes[right].parent == node);
@@ -1140,12 +1142,13 @@ namespace aabb
             return;
         }
 
-        assert((0 <= left) && (left < nodeCapacity));
-        assert((0 <= right) && (right < nodeCapacity));
+        assert(left < nodeCapacity);
+        assert(right < nodeCapacity);
 
         int height1 = nodes[left].height;
         int height2 = nodes[right].height;
         int height = 1 + std::max(height1, height2);
+        (void)height; // Unused variable in Release build
         assert(nodes[node].height == height);
 
         AABB aabb;
