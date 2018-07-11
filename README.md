@@ -207,6 +207,9 @@ std::vector<double> upperBound({position[0] + radius, position[1] + radius});
 aabb::AABB aabb(lowerBound, upperBound);
 ```
 
+(While we refer to _particles_ in this example, in practice a particle could
+be any object, e.g. a sprite in a computer game.)
+
 ### Tree
 #### Initialising a tree
 To instantiate dynamic AABB trees for a periodic two-component system in
