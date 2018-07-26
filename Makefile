@@ -251,9 +251,9 @@ python: .check_python $(python_dir)/aabb.i $(python_dir)/setup.py
 .PHONY: header-only
 header-only: $(headers) $(sources)
 	mkdir -p $(header_only_dir)
-	head --lines=-3 src/AABB.h > $(header_only_lib)
+	head --lines=-2 src/AABB.h > $(header_only_lib)
 	echo >> $(header_only_lib)
-	tail --lines=+31 src/AABB.cc >> $(header_only_lib)
+	tail --lines=+29 src/AABB.cc >> $(header_only_lib)
 	echo >> $(header_only_lib)
 	echo "#endif /* _AABB_H */" >> $(header_only_lib)
 
