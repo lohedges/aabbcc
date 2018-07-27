@@ -26,8 +26,6 @@
 
 #include "AABB.h"
 
-#include <stdexcept>
-
 const unsigned int MAX_DIMENSIONS = 3;
 
 namespace aabb
