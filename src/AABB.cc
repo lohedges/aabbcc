@@ -26,6 +26,8 @@
 
 #include "AABB.h"
 
+#include <stdexcept>
+
 const unsigned int MAX_DIMENSIONS = 3;
 
 namespace aabb
@@ -48,8 +50,7 @@ namespace aabb
         // Validate the dimensionality of the bounds vectors.
         if (lowerBound.size() != upperBound.size())
         {
-            std::cerr << "[ERROR]: Dimensionality mismatch!" << '\n';
-            exit(EXIT_FAILURE);
+            throw std::invalid_argument("[ERROR]: Dimensionality mismatch!");
         }
 
         // Validate that the upper bounds exceed the lower bounds.
@@ -58,8 +59,7 @@ namespace aabb
             // Validate the bound.
             if (lowerBound[i] >= upperBound[i])
             {
-                std::cerr << "[ERROR]: AABB lower bound is greater than the upper bound!" << '\n';
-                exit(EXIT_FAILURE);
+                throw std::invalid_argument("[ERROR]: AABB lower bound is greater than the upper bound!");
             }
         }
 
@@ -182,8 +182,7 @@ namespace aabb
         // Validate the dimensionality.
         if ((dimension != 2) && (dimension != 3))
         {
-            std::cerr << "[ERROR]: Invalid dimensionality!" << '\n';
-            exit(EXIT_FAILURE);
+            throw std::invalid_argument("[ERROR]: Invalid dimensionality!");
         }
 
         // Initialise the periodicity vector.
@@ -219,15 +218,13 @@ namespace aabb
         // Validate the dimensionality.
         if ((dimension != 2) && (dimension != 3))
         {
-            std::cerr << "[ERROR]: Invalid dimensionality!" << '\n';
-            exit(EXIT_FAILURE);
+            throw std::invalid_argument("[ERROR]: Invalid dimensionality!");
         }
 
         // Validate the dimensionality of the vectors.
         if ((periodicity.size() != dimension) || (boxSize.size() != dimension))
         {
-            std::cerr << "[ERROR]: Dimensionality mismatch!" << '\n';
-            exit(EXIT_FAILURE);
+            throw std::invalid_argument("[ERROR]: Dimensionality mismatch!");
         }
 
         // Initialise the tree.
@@ -325,15 +322,13 @@ namespace aabb
         // Make sure the particle doesn't already exist.
         if (particleMap.count(particle) != 0)
         {
-            std::cerr << "[ERROR]: Particle already exists in tree!" << '\n';
-            exit(EXIT_FAILURE);
+            throw std::invalid_argument("[ERROR]: Particle already exists in tree!");
         }
 
         // Validate the dimensionality of the position vector.
         if (position.size() != dimension)
         {
-            std::cerr << "[ERROR]: Dimensionality mismatch!" << '\n';
-            exit(EXIT_FAILURE);
+            throw std::invalid_argument("[ERROR]: Dimensionality mismatch!");
         }
 
         // Allocate a new node for the particle.
@@ -377,15 +372,13 @@ namespace aabb
         // Make sure the particle doesn't already exist.
         if (particleMap.count(particle) != 0)
         {
-            std::cerr << "[ERROR]: Particle already exists in tree!" << '\n';
-            exit(EXIT_FAILURE);
+            throw std::invalid_argument("[ERROR]: Particle already exists in tree!");
         }
 
         // Validate the dimensionality of the bounds vectors.
         if ((lowerBound.size() != dimension) || (upperBound.size() != dimension))
         {
-            std::cerr << "[ERROR]: Dimensionality mismatch!" << '\n';
-            exit(EXIT_FAILURE);
+            throw std::invalid_argument("[ERROR]: Dimensionality mismatch!");
         }
 
         // Allocate a new node for the particle.
@@ -400,8 +393,7 @@ namespace aabb
             // Validate the bound.
             if (lowerBound[i] >= upperBound[i])
             {
-                std::cerr << "[ERROR]: AABB lower bound is greater than the upper bound!" << '\n';
-                exit(EXIT_FAILURE);
+                throw std::invalid_argument("[ERROR]: AABB lower bound is greater than the upper bound!");
             }
 
             nodes[node].aabb.lowerBound[i] = lowerBound[i];
@@ -447,8 +439,7 @@ namespace aabb
         // The particle doesn't exist.
         if (it == particleMap.end())
         {
-            std::cerr << "[ERROR]: Invalid particle index!" << '\n';
-            exit(EXIT_FAILURE);
+            throw std::invalid_argument("[ERROR]: Invalid particle index!");
         }
 
         // Extract the node index.
@@ -493,8 +484,7 @@ namespace aabb
         // Validate the dimensionality of the position vector.
         if (position.size() != dimension)
         {
-            std::cerr << "[ERROR]: Dimensionality mismatch!" << '\n';
-            exit(EXIT_FAILURE);
+            throw std::invalid_argument("[ERROR]: Dimensionality mismatch!");
         }
 
         // AABB bounds vectors.
@@ -517,8 +507,7 @@ namespace aabb
         // Validate the dimensionality of the bounds vectors.
         if ((lowerBound.size() != dimension) && (upperBound.size() != dimension))
         {
-            std::cerr << "[ERROR]: Dimensionality mismatch!" << '\n';
-            exit(EXIT_FAILURE);
+            throw std::invalid_argument("[ERROR]: Dimensionality mismatch!");
         }
 
         // Map iterator.
@@ -530,8 +519,7 @@ namespace aabb
         // The particle doesn't exist.
         if (it == particleMap.end())
         {
-            std::cerr << "[ERROR]: Invalid particle index!" << '\n';
-            exit(EXIT_FAILURE);
+            throw std::invalid_argument("[ERROR]: Invalid particle index!");
         }
 
         // Extract the node index.
@@ -549,8 +537,7 @@ namespace aabb
             // Validate the bound.
             if (lowerBound[i] >= upperBound[i])
             {
-                std::cerr << "[ERROR]: AABB lower bound is greater than the upper bound!" << '\n';
-                exit(EXIT_FAILURE);
+                throw std::invalid_argument("[ERROR]: AABB lower bound is greater than the upper bound!");
             }
 
             size[i] = upperBound[i] - lowerBound[i];
@@ -590,8 +577,7 @@ namespace aabb
         // Make sure that this is a valid particle.
         if (particleMap.count(particle) == 0)
         {
-            std::cerr << "[ERROR]: Invalid particle index!" << '\n';
-            exit(EXIT_FAILURE);
+            throw std::invalid_argument("[ERROR]: Invalid particle index!");
         }
 
         // Test overlap of particle AABB against all other particles.
