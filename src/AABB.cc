@@ -45,6 +45,24 @@ namespace aabb
     AABB::AABB(const std::vector<double>& lowerBound_, const std::vector<double>& upperBound_) :
         lowerBound(lowerBound_), upperBound(upperBound_)
     {
+        // Validate the dimensionality of the bounds vectors.
+        if (lowerBound.size() != upperBound.size())
+        {
+            std::cerr << "[ERROR]: Dimensionality mismatch!" << '\n';
+            exit(EXIT_FAILURE);
+        }
+
+        // Validate that the upper bounds exceed the lower bounds.
+        for (unsigned int i=0;i<lowerBound.size();i++)
+        {
+            // Validate the bound.
+            if (lowerBound[i] >= upperBound[i])
+            {
+                std::cerr << "[ERROR]: AABB lower bound is greater than the upper bound!" << '\n';
+                exit(EXIT_FAILURE);
+            }
+        }
+
         surfaceArea = computeSurfaceArea();
         centre = computeCentre();
     }
@@ -325,7 +343,7 @@ namespace aabb
         double size[MAX_DIMENSIONS];
 
         // Compute the AABB limits.
-        for (unsigned i=0;i<dimension;i++)
+        for (unsigned int i=0;i<dimension;i++)
         {
             nodes[node].aabb.lowerBound[i] = position[i] - radius;
             nodes[node].aabb.upperBound[i] = position[i] + radius;
@@ -333,7 +351,7 @@ namespace aabb
         }
 
         // Fatten the AABB.
-        for (unsigned i=0;i<dimension;i++)
+        for (unsigned int i=0;i<dimension;i++)
         {
             nodes[node].aabb.lowerBound[i] -= skinThickness * size[i];
             nodes[node].aabb.upperBound[i] += skinThickness * size[i];
@@ -377,7 +395,7 @@ namespace aabb
         double size[MAX_DIMENSIONS];
 
         // Compute the AABB limits.
-        for (unsigned i=0;i<dimension;i++)
+        for (unsigned int i=0;i<dimension;i++)
         {
             // Validate the bound.
             if (lowerBound[i] >= upperBound[i])
@@ -392,7 +410,7 @@ namespace aabb
         }
 
         // Fatten the AABB.
-        for (unsigned i=0;i<dimension;i++)
+        for (unsigned int i=0;i<dimension;i++)
         {
             nodes[node].aabb.lowerBound[i] -= skinThickness * size[i];
             nodes[node].aabb.upperBound[i] += skinThickness * size[i];
@@ -484,7 +502,7 @@ namespace aabb
         std::vector<double> upperBound(dimension);
 
         // Compute the AABB limits.
-        for (unsigned i=0;i<dimension;i++)
+        for (unsigned int i=0;i<dimension;i++)
         {
             lowerBound[i] = position[i] - radius;
             upperBound[i] = position[i] + radius;
@@ -526,7 +544,7 @@ namespace aabb
         double size[MAX_DIMENSIONS];
 
         // Compute the AABB limits.
-        for (unsigned i=0;i<dimension;i++)
+        for (unsigned int i=0;i<dimension;i++)
         {
             // Validate the bound.
             if (lowerBound[i] >= upperBound[i])
@@ -548,7 +566,7 @@ namespace aabb
         removeLeaf(node);
 
         // Fatten the new AABB.
-        for (unsigned i=0;i<dimension;i++)
+        for (unsigned int i=0;i<dimension;i++)
         {
             aabb.lowerBound[i] -= skinThickness * size[i];
             aabb.upperBound[i] += skinThickness * size[i];
