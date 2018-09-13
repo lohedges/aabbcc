@@ -284,10 +284,13 @@ namespace aabb
             \param radius
                 The radius of the particle.
 
+            \param alwaysReinsert
+                Always reinsert the particle, even if it's within its old AABB (default:false)
+
             \return
                 Whether the particle was reinserted.
          */
-        bool updateParticle(unsigned int, std::vector<double>&, double);
+        bool updateParticle(unsigned int, std::vector<double>&, double, bool alwaysReinsert=false);
 
         //! Update the tree if a particle moves outside its fattened AABB.
         /*! \param particle
@@ -299,8 +302,11 @@ namespace aabb
             \param upperBound
                 The upper bound in each dimension.
 
+            \param alwaysReinsert
+                Always reinsert the particle, even if it's within its old AABB (default: false)
+
          */
-        bool updateParticle(unsigned int, std::vector<double>&, std::vector<double>&);
+        bool updateParticle(unsigned int, std::vector<double>&, std::vector<double>&, , bool alwaysReinsert=false);
 
         //! Query the tree to find candidate interactions for a particle.
         /*! \param particle

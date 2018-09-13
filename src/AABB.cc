@@ -489,7 +489,8 @@ namespace aabb
         particleMap.clear();
     }
 
-    bool Tree::updateParticle(unsigned int particle, std::vector<double>& position, double radius)
+    bool Tree::updateParticle(unsigned int particle, std::vector<double>& position, double radius,
+                              bool alwaysReinsert=false)
     {
         // Validate the dimensionality of the position vector.
         if (position.size() != dimension)
@@ -509,10 +510,11 @@ namespace aabb
         }
 
         // Update the particle.
-        return updateParticle(particle, lowerBound, upperBound);
+        return updateParticle(particle, lowerBound, upperBound, alwaysReinsert);
     }
 
-    bool Tree::updateParticle(unsigned int particle, std::vector<double>& lowerBound, std::vector<double>& upperBound)
+    bool Tree::updateParticle(unsigned int particle, std::vector<double>& lowerBound,
+                              std::vector<double>& upperBound, bool alwaysReinsert=false)
     {
         // Validate the dimensionality of the bounds vectors.
         if ((lowerBound.size() != dimension) && (upperBound.size() != dimension))
