@@ -490,7 +490,7 @@ namespace aabb
     }
 
     bool Tree::updateParticle(unsigned int particle, std::vector<double>& position, double radius,
-                              bool alwaysReinsert=false)
+                              bool alwaysReinsert)
     {
         // Validate the dimensionality of the position vector.
         if (position.size() != dimension)
@@ -514,7 +514,7 @@ namespace aabb
     }
 
     bool Tree::updateParticle(unsigned int particle, std::vector<double>& lowerBound,
-                              std::vector<double>& upperBound, bool alwaysReinsert=false)
+                              std::vector<double>& upperBound, bool alwaysReinsert)
     {
         // Validate the dimensionality of the bounds vectors.
         if ((lowerBound.size() != dimension) && (upperBound.size() != dimension))
@@ -558,9 +558,9 @@ namespace aabb
         // Create the new AABB.
         AABB aabb(lowerBound, upperBound);
 
+        
         // No need to update if the particle is still within its fattened AABB.
-        // TODO: maybe make this optional?
-        //if (nodes[node].aabb.contains(aabb)) return false;
+        if (!alwaysReinsert && nodes[node].aabb.contains(aabb)) return false;
 
         // Remove the current leaf.
         removeLeaf(node);

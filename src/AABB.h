@@ -306,7 +306,7 @@ namespace aabb
                 Always reinsert the particle, even if it's within its old AABB (default: false)
 
          */
-        bool updateParticle(unsigned int, std::vector<double>&, std::vector<double>&, , bool alwaysReinsert=false);
+        bool updateParticle(unsigned int, std::vector<double>&, std::vector<double>&, bool alwaysReinsert=false);
 
         //! Query the tree to find candidate interactions for a particle.
         /*! \param particle
