@@ -99,10 +99,13 @@ namespace aabb
         /*! \param aabb
                 A reference to the AABB.
 
+            \param touchIsOverlap
+                Does touching constitute an overlap?
+
             \return
                 Whether the AABB overlaps.
          */
-        bool overlaps(const AABB&) const;
+        bool overlaps(const AABB&, bool touchIsOverlap) const;
 
         //! Compute the centre of the AABB.
         /*! \returns
@@ -195,8 +198,12 @@ namespace aabb
 
             \param nParticles
                 The number of particles (for fixed particle number systems).
+
+            \param touchIsOverlap
+                Does touching count as overlapping in query operations?
          */
-        Tree(unsigned int dimension_= 3, double skinThickness_ = 0.05, unsigned int nParticles = 16);
+        Tree(unsigned int dimension_= 3, double skinThickness_ = 0.05,
+            unsigned int nParticles = 16, bool touchIsOverlap=true);
 
         //! Constructor (custom periodicity).
         /*! \param dimension_
@@ -214,8 +221,12 @@ namespace aabb
 
             \param nParticles
                 The number of particles (for fixed particle number systems).
+
+            \param touchIsOverlap
+                Does touching count as overlapping in query operations?
          */
-        Tree(unsigned int, double, const std::vector<bool>&, const std::vector<double>&, unsigned int nParticles = 16);
+        Tree(unsigned int, double, const std::vector<bool>&, const std::vector<double>&,
+            unsigned int nParticles = 16, bool touchIsOverlap=true);
 
         //! Set the periodicity of the simulation box.
         /*! \param periodicity_
@@ -275,10 +286,13 @@ namespace aabb
             \param radius
                 The radius of the particle.
 
+            \param alwaysReinsert
+                Always reinsert the particle, even if it's within its old AABB (default:false)
+
             \return
                 Whether the particle was reinserted.
          */
-        bool updateParticle(unsigned int, std::vector<double>&, double);
+        bool updateParticle(unsigned int, std::vector<double>&, double, bool alwaysReinsert=false);
 
         //! Update the tree if a particle moves outside its fattened AABB.
         /*! \param particle
@@ -290,8 +304,10 @@ namespace aabb
             \param upperBound
                 The upper bound in each dimension.
 
+            \param alwaysReinsert
+                Always reinsert the particle, even if it's within its old AABB (default: false)
          */
-        bool updateParticle(unsigned int, std::vector<double>&, std::vector<double>&);
+        bool updateParticle(unsigned int, std::vector<double>&, std::vector<double>&, bool alwaysReinsert=false);
 
         //! Query the tree to find candidate interactions for a particle.
         /*! \param particle
@@ -400,6 +416,9 @@ namespace aabb
 
         /// A map between particle and node indices.
         std::map<unsigned int, unsigned int> particleMap;
+
+        /// Does touching count as overlapping in tree queries?
+        bool touchIsOverlap;
 
         //! Allocate a new node.
         /*! \return

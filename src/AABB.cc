@@ -26,8 +26,6 @@
 
 #include "AABB.h"
 
-const unsigned int MAX_DIMENSIONS = 3;
-
 namespace aabb
 {
     AABB::AABB()
@@ -36,7 +34,7 @@ namespace aabb
 
     AABB::AABB(unsigned int dimension)
     {
-        assert((dimension == 2) || (dimension == 3));
+        assert(dimension >= 2);
 
         lowerBound.resize(dimension);
         upperBound.resize(dimension);
@@ -67,22 +65,27 @@ namespace aabb
 
     double AABB::computeSurfaceArea() const
     {
-        // Calculate the perimeter of the 2D AABB.
-        if (lowerBound.size() == 2)
+        // Sum of volumes of all the sides.
+        double sum = 0;
+
+        // General formula for one side: hold one dimension constant
+        // and multiply by all the other ones.
+        for (unsigned int d1 = 0; d1 < lowerBound.size(); d1++)
         {
-            double wx = upperBound[0] - lowerBound[0];
-            double wy = upperBound[1] - lowerBound[1];
-            return 2.0 * (wx + wy);
+            // Volume of current side.
+            double product = 1;
+
+            for (unsigned int d2 = 0; d2 < lowerBound.size(); d2++)
+            {
+                if (d1 == d2)
+                    continue;
+
+                double dx = upperBound[d2] - lowerBound[d2];
+                product *= dx;
+            }
         }
 
-        // Calculate the surface area of the 3D AABB.
-        else
-        {
-            double wx = upperBound[0] - lowerBound[0];
-            double wy = upperBound[1] - lowerBound[1];
-            double wz = upperBound[2] - lowerBound[2];
-            return 2.0 * (wx*wy + wx*wz + wy*wz);
-        }
+        return 2.0 * sum;
     }
 
     double AABB::getSurfaceArea() const
@@ -121,28 +124,36 @@ namespace aabb
         return true;
     }
 
-    bool AABB::overlaps(const AABB& aabb) const
+    bool AABB::overlaps(const AABB& aabb, bool touchIsOverlap) const
     {
         assert(aabb.lowerBound.size() == lowerBound.size());
 
-        if (lowerBound.size() == 2)
+        bool rv = true;
+
+        if (touchIsOverlap)
         {
-            return !(   aabb.upperBound[0] < lowerBound[0]
-                     || aabb.lowerBound[0] > upperBound[0]
-                     || aabb.upperBound[1] < lowerBound[1]
-                     || aabb.lowerBound[1] > upperBound[1]
-                    );
+            for (unsigned int i = 0; i < lowerBound.size(); ++i)
+            {
+                if (aabb.upperBound[i] < lowerBound[i] || aabb.lowerBound[i] > upperBound[i])
+                {
+                    rv = false;
+                    break;
+                }
+            }
         }
         else
         {
-            return !(   aabb.upperBound[0] < lowerBound[0]
-                     || aabb.lowerBound[0] > upperBound[0]
-                     || aabb.upperBound[1] < lowerBound[1]
-                     || aabb.lowerBound[1] > upperBound[1]
-                     || aabb.upperBound[2] < lowerBound[2]
-                     || aabb.lowerBound[2] > upperBound[2]
-                    );
+            for (unsigned int i = 0; i < lowerBound.size(); ++i)
+            {
+                if (aabb.upperBound[i] <= lowerBound[i] || aabb.lowerBound[i] >= upperBound[i])
+                {
+                    rv = false;
+                    break;
+                }
+            }
         }
+
+        return rv;
     }
 
     std::vector<double> AABB::computeCentre()
@@ -157,7 +168,7 @@ namespace aabb
 
     void AABB::setDimension(unsigned int dimension)
     {
-        assert((dimension == 2) || (dimension == 3));
+        assert(dimension >= 2);
 
         lowerBound.resize(dimension);
         upperBound.resize(dimension);
@@ -174,11 +185,13 @@ namespace aabb
 
     Tree::Tree(unsigned int dimension_,
                double skinThickness_,
-               unsigned int nParticles) :
-        dimension(dimension_), isPeriodic(false), skinThickness(skinThickness_)
+               unsigned int nParticles,
+               bool touchIsOverlap_) :
+        dimension(dimension_), isPeriodic(false), skinThickness(skinThickness_),
+        touchIsOverlap(touchIsOverlap_)
     {
         // Validate the dimensionality.
-        if ((dimension != 2) && (dimension != 3))
+        if ((dimension < 2))
         {
             throw std::invalid_argument("[ERROR]: Invalid dimensionality!");
         }
@@ -210,11 +223,14 @@ namespace aabb
                double skinThickness_,
                const std::vector<bool>& periodicity_,
                const std::vector<double>& boxSize_,
-               unsigned int nParticles) :
-        dimension(dimension_), skinThickness(skinThickness_), periodicity(periodicity_), boxSize(boxSize_)
+               unsigned int nParticles,
+               bool touchIsOverlap_) :
+        dimension(dimension_), skinThickness(skinThickness_),
+        periodicity(periodicity_), boxSize(boxSize_),
+        touchIsOverlap(touchIsOverlap_)
     {
         // Validate the dimensionality.
-        if ((dimension != 2) && (dimension != 3))
+        if (dimension < 2)
         {
             throw std::invalid_argument("[ERROR]: Invalid dimensionality!");
         }
@@ -227,6 +243,7 @@ namespace aabb
 
         // Initialise the tree.
         root = NULL_NODE;
+        touchIsOverlap = true;
         nodeCount = 0;
         nodeCapacity = nParticles;
         nodes.resize(nodeCapacity);
@@ -333,7 +350,7 @@ namespace aabb
         unsigned int node = allocateNode();
 
         // AABB size in each dimension.
-        double size[MAX_DIMENSIONS];
+        double size[dimension];
 
         // Compute the AABB limits.
         for (unsigned int i=0;i<dimension;i++)
@@ -383,7 +400,7 @@ namespace aabb
         unsigned int node = allocateNode();
 
         // AABB size in each dimension.
-        double size[MAX_DIMENSIONS];
+        double size[dimension];
 
         // Compute the AABB limits.
         for (unsigned int i=0;i<dimension;i++)
@@ -477,7 +494,8 @@ namespace aabb
         particleMap.clear();
     }
 
-    bool Tree::updateParticle(unsigned int particle, std::vector<double>& position, double radius)
+    bool Tree::updateParticle(unsigned int particle, std::vector<double>& position, double radius,
+                              bool alwaysReinsert)
     {
         // Validate the dimensionality of the position vector.
         if (position.size() != dimension)
@@ -497,10 +515,11 @@ namespace aabb
         }
 
         // Update the particle.
-        return updateParticle(particle, lowerBound, upperBound);
+        return updateParticle(particle, lowerBound, upperBound, alwaysReinsert);
     }
 
-    bool Tree::updateParticle(unsigned int particle, std::vector<double>& lowerBound, std::vector<double>& upperBound)
+    bool Tree::updateParticle(unsigned int particle, std::vector<double>& lowerBound,
+                              std::vector<double>& upperBound, bool alwaysReinsert)
     {
         // Validate the dimensionality of the bounds vectors.
         if ((lowerBound.size() != dimension) && (upperBound.size() != dimension))
@@ -527,7 +546,7 @@ namespace aabb
         assert(nodes[node].isLeaf());
 
         // AABB size in each dimension.
-        double size[MAX_DIMENSIONS];
+        double size[dimension];
 
         // Compute the AABB limits.
         for (unsigned int i=0;i<dimension;i++)
@@ -544,8 +563,9 @@ namespace aabb
         // Create the new AABB.
         AABB aabb(lowerBound, upperBound);
 
+
         // No need to update if the particle is still within its fattened AABB.
-        if (nodes[node].aabb.contains(aabb)) return false;
+        if (!alwaysReinsert && nodes[node].aabb.contains(aabb)) return false;
 
         // Remove the current leaf.
         removeLeaf(node);
@@ -621,14 +641,16 @@ namespace aabb
             }
 
             // Test for overlap between the AABBs.
-            if (aabb.overlaps(nodeAABB))
+            if (aabb.overlaps(nodeAABB, touchIsOverlap))
             {
                 // Check that we're at a leaf node.
                 if (nodes[node].isLeaf())
                 {
                     // Can't interact with itself.
                     if (nodes[node].particle != particle)
+                    {
                         particles.push_back(nodes[node].particle);
+                    }
                 }
                 else
                 {
