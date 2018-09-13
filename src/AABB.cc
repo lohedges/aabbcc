@@ -53,7 +53,7 @@ namespace aabb
         for (unsigned int i=0;i<lowerBound.size();i++)
         {
             // Validate the bound.
-            if (lowerBound[i] >= upperBound[i])
+            if (lowerBound[i] > upperBound[i])
             {
                 throw std::invalid_argument("[ERROR]: AABB lower bound is greater than the upper bound!");
             }
@@ -401,7 +401,7 @@ namespace aabb
         for (unsigned int i=0;i<dimension;i++)
         {
             // Validate the bound.
-            if (lowerBound[i] >= upperBound[i])
+            if (lowerBound[i] > upperBound[i])
             {
                 throw std::invalid_argument("[ERROR]: AABB lower bound is greater than the upper bound!");
             }
@@ -547,7 +547,7 @@ namespace aabb
         for (unsigned int i=0;i<dimension;i++)
         {
             // Validate the bound.
-            if (lowerBound[i] >= upperBound[i])
+            if (lowerBound[i] > upperBound[i])
             {
                 throw std::invalid_argument("[ERROR]: AABB lower bound is greater than the upper bound!");
             }
