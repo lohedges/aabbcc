@@ -65,14 +65,17 @@ namespace aabb
 
     double AABB::computeSurfaceArea() const
     {
-        double sum = 0; // sum of volumes of all the sides
-        
-        // general formula for one side: hold one dimension constant, and multiply by all the other ones
-        for (unsigned int d1 = 0; d1 < lowerBound.size(); ++d1)
+        // Sum of volumes of all the sides.
+        double sum = 0;
+
+        // General formula for one side: hold one dimension constant
+        // and multiply by all the other ones.
+        for (unsigned int d1 = 0; d1 < lowerBound.size(); d1++)
         {
-            double product = 1; // volume of current side
-            
-            for (unsigned int d2 = 0; d2 < lowerBound.size(); ++d2)
+            // Volume of current side.
+            double product = 1;
+
+            for (unsigned int d2 = 0; d2 < lowerBound.size(); d2++)
             {
                 if (d1 == d2)
                     continue;
@@ -184,7 +187,8 @@ namespace aabb
                double skinThickness_,
                unsigned int nParticles,
                bool touchIsOverlap_) :
-        dimension(dimension_), isPeriodic(false), skinThickness(skinThickness_), touchIsOverlap(touchIsOverlap_)
+        dimension(dimension_), isPeriodic(false), skinThickness(skinThickness_),
+        touchIsOverlap(touchIsOverlap_)
     {
         // Validate the dimensionality.
         if ((dimension < 2))
@@ -221,7 +225,8 @@ namespace aabb
                const std::vector<double>& boxSize_,
                unsigned int nParticles,
                bool touchIsOverlap_) :
-        dimension(dimension_), skinThickness(skinThickness_), periodicity(periodicity_), boxSize(boxSize_),
+        dimension(dimension_), skinThickness(skinThickness_),
+        periodicity(periodicity_), boxSize(boxSize_),
         touchIsOverlap(touchIsOverlap_)
     {
         // Validate the dimensionality.
@@ -558,7 +563,7 @@ namespace aabb
         // Create the new AABB.
         AABB aabb(lowerBound, upperBound);
 
-        
+
         // No need to update if the particle is still within its fattened AABB.
         if (!alwaysReinsert && nodes[node].aabb.contains(aabb)) return false;
 
