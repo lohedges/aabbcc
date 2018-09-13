@@ -31,8 +31,8 @@ In statistical physics, a common means of approximating a bulk (infinite)
 system is through the use of [periodic boundary conditions](https://en.wikipedia.org/wiki/Periodic_boundary_conditions).
 Here, particles that are on opposite sides of the unit box can interact through
 its periodic image. This library supports periodic and non-periodic systems
-in two and three dimensions. Support is also provided for simulation boxes
-that are partially periodic, i.e. periodic along specific axes. At present,
+in an arbitrary number of dimensions (> 2). Support is also provided for simulation
+boxes that are partially periodic, i.e. periodic along specific axes. At present,
 only orthorhombic simulation boxes are supported.
 
 The code in this library was adapted from parts of the [Box2D](http://www.box2d.org)
