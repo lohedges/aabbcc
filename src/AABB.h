@@ -33,7 +33,6 @@
 #include <iostream>
 #include <limits>
 #include <map>
-#include <stdexcept>
 #include <vector>
 
 /// Null node flag.
@@ -98,11 +97,13 @@ namespace aabb
         //! Test whether the AABB overlaps this one.
         /*! \param aabb
                 A reference to the AABB.
+            \param touchIsOverlap
+                Does touching constitute an overlap?
 
             \return
                 Whether the AABB overlaps.
          */
-        bool overlaps(const AABB&) const;
+        bool overlaps(const AABB&, bool touchIsOverlap) const;
 
         //! Compute the centre of the AABB.
         /*! \returns
@@ -195,8 +196,12 @@ namespace aabb
 
             \param nParticles
                 The number of particles (for fixed particle number systems).
+
+            \param touchIsOverlap
+                Does touching count as overlapping in query operations?
          */
-        Tree(unsigned int dimension_= 3, double skinThickness_ = 0.05, unsigned int nParticles = 16);
+        Tree(unsigned int dimension_= 3, double skinThickness_ = 0.05, unsigned int nParticles = 16,
+             bool touchIsOverlap=true);
 
         //! Constructor (custom periodicity).
         /*! \param dimension_
@@ -214,8 +219,12 @@ namespace aabb
 
             \param nParticles
                 The number of particles (for fixed particle number systems).
+
+            \param touchIsOverlap
+                Does touching count as overlapping in query operations?
          */
-        Tree(unsigned int, double, const std::vector<bool>&, const std::vector<double>&, unsigned int nParticles = 16);
+        Tree(unsigned int, double, const std::vector<bool>&, const std::vector<double>&, unsigned int nParticles = 16,
+            bool touchIsOverlap=true);
 
         //! Set the periodicity of the simulation box.
         /*! \param periodicity_
@@ -400,6 +409,9 @@ namespace aabb
 
         /// A map between particle and node indices.
         std::map<unsigned int, unsigned int> particleMap;
+
+        /// Does touching count as overlapping in tree queries?
+        bool touchIsOverlap;
 
         //! Allocate a new node.
         /*! \return

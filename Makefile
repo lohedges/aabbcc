@@ -82,7 +82,8 @@ CXX := g++
 PREFIX := /usr/local
 
 # Python version
-PYTHON := 2.7
+#PYTHON := 2.7
+PYTHON := 3.6
 
 # External libraries.
 LIBS :=
