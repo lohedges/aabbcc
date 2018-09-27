@@ -83,6 +83,7 @@ namespace aabb
                 double dx = upperBound[d2] - lowerBound[d2];
                 product *= dx;
             }
+sum += product;////add by black6816. ---is this correct???? need reply,thanks.
         }
 
         return 2.0 * sum;
