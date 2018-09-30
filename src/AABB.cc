@@ -65,14 +65,14 @@ namespace aabb
 
     double AABB::computeSurfaceArea() const
     {
-        // Sum of volumes of all the sides.
+        // Sum of "area" of all the sides.
         double sum = 0;
 
         // General formula for one side: hold one dimension constant
         // and multiply by all the other ones.
         for (unsigned int d1 = 0; d1 < lowerBound.size(); d1++)
         {
-            // Volume of current side.
+            // "Area" of current side.
             double product = 1;
 
             for (unsigned int d2 = 0; d2 < lowerBound.size(); d2++)
@@ -83,6 +83,9 @@ namespace aabb
                 double dx = upperBound[d2] - lowerBound[d2];
                 product *= dx;
             }
+
+            // Update the sum.
+            sum += product;
         }
 
         return 2.0 * sum;
