@@ -566,7 +566,6 @@ namespace aabb
         // Create the new AABB.
         AABB aabb(lowerBound, upperBound);
 
-
         // No need to update if the particle is still within its fattened AABB.
         if (!alwaysReinsert && nodes[node].aabb.contains(aabb)) return false;
 
