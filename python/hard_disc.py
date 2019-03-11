@@ -36,6 +36,8 @@
 #
 #       print doubleVector.size()
 
+from __future__ import print_function
+
 import aabb
 import math
 import random
@@ -183,7 +185,7 @@ for i in range(0, nLarge):
             isOverlap = False
 
             # Test overlap.
-            for j in range(0, particles.size()):
+            for j in range(0, len(particles)):
                 if overlaps(position, positionsLarge[particles[j]], periodicity, boxSize, cutOff):
                     isOverlap = True
                     break
@@ -230,7 +232,7 @@ for i in range(0, nSmall):
         isOverlap = False
 
         # Test overlap.
-        for j in range(0, particles.size()):
+        for j in range(0, len(particles)):
             if overlaps(position, positionsLarge[particles[j]], periodicity, boxSize, cutOff):
                 isOverlap = True
                 break
@@ -247,7 +249,7 @@ for i in range(0, nSmall):
                 particles = treeSmall.query(AABB)
 
                 # Test overlap.
-                for j in range(0, particles.size()):
+                for j in range(0, len(particles)):
                     if overlaps(position, positionsSmall[particles[j]], periodicity, boxSize, cutOff):
                         isOverlap = True
                         break
@@ -320,7 +322,7 @@ for i in range(0, nSweeps):
         cutOff *= cutOff
 
         # Test overlap.
-        for k in range(0, particles.size()):
+        for k in range(0, len(particles)):
             # Don't test self overlap.
             if particleType == 1 or particles[k] != particle:
                 if overlaps(position, positionsSmall[particles[k]], periodicity, boxSize, cutOff):
@@ -337,7 +339,7 @@ for i in range(0, nSweeps):
             cutOff *= cutOff
 
             # Test overlap.
-            for k in range(0, particles.size()):
+            for k in range(0, len(particles)):
                 # Don't test self overlap.
                 if particleType == 0 or particles[k] != particle:
                     if overlaps(position, positionsLarge[particles[k]], periodicity, boxSize, cutOff):
