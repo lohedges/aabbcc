@@ -80,7 +80,7 @@ namespace aabb
                 if (d1 == d2)
                     continue;
 
-                double dx = upperBound[d2] - lowerBound[d2];
+                double dx = upperBound[d2] - lowerBound[d1];
                 product *= dx;
             }
 
