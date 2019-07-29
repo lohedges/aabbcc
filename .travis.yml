@@ -1,3 +1,4 @@
+dist: xenial
 language: cpp
 
 notifications:
@@ -11,8 +12,6 @@ matrix:
     - os: linux
       addons:
         apt:
-          sources:
-            - ubuntu-toolchain-r-test
           packages:
             - g++-4.9
             - swig
@@ -22,8 +21,6 @@ matrix:
     - os: linux
       addons:
         apt:
-          sources:
-            - ubuntu-toolchain-r-test
           packages:
             - g++-5
             - swig
@@ -53,19 +50,12 @@ matrix:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
 # Clang builds.
-# Note that we pull in g++-6 in order to have recent libstdc++.
-# The version of libc++ available with Trusty does not work correctly,
-# since the libstdc++ path is found first when linking.
 
     - os: linux
       addons:
         apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-4.0
           packages:
             - clang-4.0
-            - g++-6
             - swig
       env:
         - MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0"
@@ -73,15 +63,20 @@ matrix:
     - os: linux
       addons:
         apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-5.0
           packages:
             - clang-5.0
-            - g++-6
             - swig
       env:
         - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
+
+    - os: linux
+      addons:
+        apt:
+          packages:
+            - clang-6.0
+            - swig
+      env:
+        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
 
 before_install:
   - eval "${MATRIX_EVAL}"
