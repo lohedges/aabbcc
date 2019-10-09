@@ -33,7 +33,7 @@
 #include <iostream>
 #include <limits>
 #include <stdexcept>
-#include <unordered_map>
+#include <map>
 #include <vector>
 
 /// Null node flag.
@@ -416,7 +416,7 @@ namespace aabb
         std::vector<double> posMinImage;
 
         /// A map between particle and node indices.
-        std::unordered_map<unsigned int, unsigned int> particleMap;
+        std::map<unsigned int, unsigned int> particleMap;
 
         /// Does touching count as overlapping in tree queries?
         bool touchIsOverlap;

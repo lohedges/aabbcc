@@ -379,7 +379,7 @@ namespace aabb
         insertLeaf(node);
 
         // Add the new particle to the map.
-        particleMap.insert(std::unordered_map<unsigned int, unsigned int>::value_type(particle, node));
+        particleMap.insert(std::map<unsigned int, unsigned int>::value_type(particle, node));
 
         // Store the particle index.
         nodes[node].particle = particle;
@@ -435,7 +435,7 @@ namespace aabb
         insertLeaf(node);
 
         // Add the new particle to the map.
-        particleMap.insert(std::unordered_map<unsigned int, unsigned int>::value_type(particle, node));
+        particleMap.insert(std::map<unsigned int, unsigned int>::value_type(particle, node));
 
         // Store the particle index.
         nodes[node].particle = particle;
@@ -449,7 +449,7 @@ namespace aabb
     void Tree::removeParticle(unsigned int particle)
     {
         // Map iterator.
-        std::unordered_map<unsigned int, unsigned int>::iterator it;
+        std::map<unsigned int, unsigned int>::iterator it;
 
         // Find the particle.
         it = particleMap.find(particle);
@@ -476,7 +476,7 @@ namespace aabb
     void Tree::removeAll()
     {
         // Iterator pointing to the start of the particle map.
-        std::unordered_map<unsigned int, unsigned int>::iterator it = particleMap.begin();
+        std::map<unsigned int, unsigned int>::iterator it = particleMap.begin();
 
         // Iterate over the map.
         while (it != particleMap.end())
@@ -531,7 +531,7 @@ namespace aabb
         }
 
         // Map iterator.
-        std::unordered_map<unsigned int, unsigned int>::iterator it;
+        std::map<unsigned int, unsigned int>::iterator it;
 
         // Find the particle.
         it = particleMap.find(particle);
