@@ -10,8 +10,14 @@ include(GNUInstallDirs) # Define CMAKE_INSTALL_xxx: LIBDIR, INCLUDEDIR
 option(AABBCC_BUILD_DEMOS "Build demos" OFF)
 mark_as_advanced(AABBCC_BUILD_DEMOS)
 
-add_library(aabbcc src/AABB.cc)
+option(AABBCC_GENERATE_HEADER_ONLY "Generate a header-only file" OFF)
+mark_as_advanced(AABBCC_GENERATE_HEADER_ONLY)
+
 set(aabbcc_include_dir src)
+set(header_file_ ${CMAKE_CURRENT_SOURCE_DIR}/src/AABB.h)
+set(source_file_ ${CMAKE_CURRENT_SOURCE_DIR}/src/AABB.cc)
+
+add_library(aabbcc ${source_file_})
 set(aabbcc_export_file "${PROJECT_BINARY_DIR}/aabbccTargets.cmake")
 
 target_include_directories(aabbcc PUBLIC
@@ -35,6 +41,19 @@ export( TARGETS aabbcc
 
 if(AABBCC_BUILD_DEMOS)
     add_subdirectory(demos)
+endif()
+
+if(AABBCC_GENERATE_HEADER_ONLY)
+  set(header_only_configure_file_input_ ${CMAKE_CURRENT_SOURCE_DIR}/cmake/header-only.h.in)
+  set(header_only_configure_file_output_ AABB.h)
+  add_custom_target(header-only
+    COMMAND ${CMAKE_COMMAND}
+    -Dheader_file_=${header_file_}
+    -Dsource_file_=${source_file_}
+    -Dconfigure_file_input_=${header-only_configure_file_input}
+    -Dheader_only_configure_file_input_=${header_only_configure_file_input_}
+    -Dheader_only_configure_file_output_=${header_only_configure_file_output_}
+    -P ${CMAKE_CURRENT_LIST_DIR}/cmake/generate_header_only.cmake)
 endif()
 
 # Install targets and config files
