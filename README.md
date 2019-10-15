@@ -237,7 +237,7 @@ aabb::Tree treeLarge(2, fatten, periodicity, boxSize, nLarge);
 ```
 
 Many of the arguments to the constructor of `Tree` are optional, see the
-[Doxygen](http://www.stack.nl/~dimitri/doxygen) documentation for details.
+[Doxygen](http://www.doxygen.nl) documentation for details.
 
 Note that both the periodicity and box size can be changed on-the-fly, e.g.
 for changing the box volume during a constant pressure simulation. See the
