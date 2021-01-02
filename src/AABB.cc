@@ -246,7 +246,6 @@ namespace aabb
 
         // Initialise the tree.
         root = NULL_NODE;
-        touchIsOverlap = true;
         nodeCount = 0;
         nodeCapacity = nParticles;
         nodes.resize(nodeCapacity);
