@@ -1,0 +1,5 @@
+@PACKAGE_INIT@
+get_filename_component(aabbcc_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+if(NOT TARGET aabbcc)
+  include ("${aabbcc_CMAKE_DIR}/aabbccTargets.cmake")
+endif()
